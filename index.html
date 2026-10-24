@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Caben — Kitchen Cabinet Refacing</title>
+<meta name="description" content="Instant-quote website template for kitchen cabinet refacing companies. One HTML file, no build step.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Serif+SC:wght@300;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* ===========================================================================
+   CABEN
+   Vibe .............. Editorial Luxury
+   Layout ............ Asymmetrical Bento, editorial-split hero
+   Colour ............ Complementary — brass amber (38°) vs slate navy (215°)
+                       on an analogous warm-neutral ground
+   Motion ............ Medium: rise + un-blur entries, magnetic buttons,
+                       island nav. Custom easing only.
+   ======================================================================== */
+
+:root{
+  color-scheme:light;
+
+  /* ground + surfaces (analogous warm neutrals) */
+  --ground:#FBF8F3;
+  --surface:#FFFFFF;
+  --surface-2:#F4EFE6;
+  --surface-3:#EAE1D2;
+
+  /* ink */
+  --ink:#221C14;
+  --ink-2:#4C4336;
+  --ink-3:#7E7364;
+
+  /* hairlines + bezel */
+  --hair:rgba(34,28,20,.085);
+  --hair-2:rgba(34,28,20,.14);
+  --bezel:rgba(34,28,20,.035);
+  --gloss:inset 0 1px 1px rgba(255,255,255,.75);
+
+  /* complementary pair */
+  --accent:#95651B;        /* brass amber  ~38°  */
+  --accent-ink:#FFFDF8;
+  --accent-soft:#F3E7CF;
+  --second:#2A3C52;        /* slate navy  ~215°  */
+  --second-soft:#E2E8EF;
+
+  --good:#2C6450;
+  --good-soft:#E2EEE8;
+
+  /* ambient, never harsh */
+  --lift:0 1px 2px rgba(34,28,20,.03), 0 18px 40px -22px rgba(34,28,20,.18);
+  --lift-lg:0 2px 4px rgba(34,28,20,.04), 0 48px 90px -40px rgba(34,28,20,.30);
+
+  --r-out:30px; --r-in:23px; --r-sm:16px;
+  --bez:7px;
+
+  --serif:"Cormorant Garamond","Noto Serif SC","Noto Serif CJK SC","Songti SC",Georgia,serif;
+  --sans:"Plus Jakarta Sans","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+
+  --ease:cubic-bezier(.32,.72,0,1);
+  --pad:clamp(20px,4.6vw,72px);
+
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#15120E; --surface:#1D1914; --surface-2:#262118; --surface-3:#302A20;
+  --ink:#F3EEE5; --ink-2:#D0C7B8; --ink-3:#978E7F;
+  --hair:rgba(255,255,255,.10); --hair-2:rgba(255,255,255,.17);
+  --bezel:rgba(255,255,255,.045); --gloss:inset 0 1px 1px rgba(255,255,255,.14);
+  --accent:#DDB062; --accent-ink:#1A1308; --accent-soft:#302617;
+  --second:#9BB3CC; --second-soft:#1D2733;
+  --good:#6FB593; --good-soft:#1A2A22;
+  --lift:0 1px 2px rgba(0,0,0,.4), 0 18px 40px -22px rgba(0,0,0,.7);
+  --lift-lg:0 2px 4px rgba(0,0,0,.4), 0 48px 90px -40px rgba(0,0,0,.8);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --ground:#15120E; --surface:#1D1914; --surface-2:#262118; --surface-3:#302A20;
+  --ink:#F3EEE5; --ink-2:#D0C7B8; --ink-3:#978E7F;
+  --hair:rgba(255,255,255,.10); --hair-2:rgba(255,255,255,.17);
+  --bezel:rgba(255,255,255,.045); --gloss:inset 0 1px 1px rgba(255,255,255,.14);
+  --accent:#DDB062; --accent-ink:#1A1308; --accent-soft:#302617;
+  --second:#9BB3CC; --second-soft:#1D2733;
+  --good:#6FB593; --good-soft:#1A2A22;
+  --lift:0 1px 2px rgba(0,0,0,.4), 0 18px 40px -22px rgba(0,0,0,.7);
+  --lift-lg:0 2px 4px rgba(0,0,0,.4), 0 48px 90px -40px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;position:relative}
+img{max-width:100%;display:block}
+[hidden]{display:none!important}
+[id]{scroll-margin-top:118px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+::selection{background:var(--accent-soft);color:var(--ink)}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+
+/* film grain — fixed layer, never on scrolling content */
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E")}
+:root[data-theme="dark"] .grain,
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .grain{opacity:.05}}
+
+.wrap{max-width:1360px;margin:0 auto;padding-inline:var(--pad);position:relative;z-index:2}
+section{padding-block:clamp(58px,6.2vw,96px)}
+
+/* ---------- type ---------- */
+h1,h2,h3{font-family:var(--serif);font-weight:300;margin:0;letter-spacing:-.015em;
+  text-wrap:balance;line-height:1.02}
+h1{font-size:clamp(44px,6.6vw,96px);letter-spacing:-.03em}
+h2{font-size:clamp(36px,5.6vw,76px);letter-spacing:-.025em;line-height:1.04}
+h3{font-size:clamp(23px,2.6vw,32px);line-height:1.15}
+h4{font-family:var(--sans);font-size:18px;font-weight:600;letter-spacing:-.01em;
+  margin:0;line-height:1.35}
+p{margin:0}
+:lang(zh) h1,:lang(zh) h2,:lang(zh) h3{font-weight:500;letter-spacing:.01em;line-height:1.22}
+:lang(zh) h1{font-size:clamp(38px,6.4vw,84px)}
+:lang(zh) h2{font-size:clamp(30px,4.4vw,58px)}
+
+.tag{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:600;
+  letter-spacing:.19em;text-transform:uppercase;color:var(--ink-3);
+  background:var(--bezel);border:1px solid var(--hair);border-radius:999px;
+  padding:8px 17px;margin-bottom:26px}
+:lang(zh) .tag{font-size:13px;letter-spacing:.18em}
+.tag i{width:5px;height:5px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+.lede{font-size:clamp(17px,1.5vw,20px);line-height:1.72;color:var(--ink-2);max-width:60ch}
+.fine{font-size:13.5px;line-height:1.6;color:var(--ink-3)}
+:lang(zh) .lede{line-height:1.9}
+:lang(zh) .fine{font-size:14px;line-height:1.8}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+/* ---------- double bezel ---------- */
+.bez{background:var(--bezel);border:1px solid var(--hair);border-radius:var(--r-out);
+  padding:var(--bez);position:relative}
+.bez > .core{border-radius:var(--r-in);background:var(--surface);box-shadow:var(--gloss);
+  overflow:hidden;position:relative}
+.bez.flat > .core{background:var(--surface-2)}
+
+/* ---------- island nav ---------- */
+.navzone{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;
+  display:flex;justify-content:center;padding:22px var(--pad) 0;pointer-events:none}
+.island{pointer-events:auto;width:max-content;max-width:100%;display:flex;align-items:center;
+  gap:10px;padding:9px 9px 9px 24px;border-radius:999px;border:1px solid var(--hair);
+  background:color-mix(in srgb, var(--surface) 76%, transparent);
+  backdrop-filter:saturate(1.7) blur(22px);-webkit-backdrop-filter:saturate(1.7) blur(22px);
+  box-shadow:var(--lift);transition:box-shadow .5s var(--ease)}
+.wordmark{font-family:var(--serif);font-weight:400;font-size:25px;letter-spacing:.2em;
+  text-decoration:none;color:inherit;line-height:1;padding-right:6px;white-space:nowrap}
+.islinks{display:flex;gap:4px;align-items:center}
+.islinks a{font-size:14px;font-weight:500;color:var(--ink-2);text-decoration:none;
+  padding:9px 15px;border-radius:999px;white-space:nowrap;
+  transition:background .4s var(--ease), color .4s var(--ease)}
+.islinks a:hover{background:var(--bezel);color:var(--ink)}
+.isbtns{display:flex;gap:6px;align-items:center}
+.mini{font:inherit;font-family:var(--sans);font-size:12.5px;font-weight:600;cursor:pointer;
+  background:transparent;color:var(--ink-2);border:1px solid var(--hair-2);border-radius:999px;
+  min-width:44px;min-height:40px;padding:0 13px;line-height:1;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:border-color .4s var(--ease), color .4s var(--ease), background .4s var(--ease)}
+.mini:hover{border-color:var(--accent);color:var(--accent)}
+.burger{display:none;width:44px;height:44px;border-radius:999px;border:1px solid var(--hair-2);
+  background:transparent;cursor:pointer;position:relative;flex:0 0 auto}
+.burger i{position:absolute;left:13px;width:18px;height:1.5px;background:var(--ink);
+  border-radius:2px;transition:transform .55s var(--ease), opacity .3s var(--ease)}
+.burger i:nth-child(1){top:18px} .burger i:nth-child(2){top:24px}
+.burger[aria-expanded=true] i:nth-child(1){transform:translateY(3px) rotate(45deg)}
+.burger[aria-expanded=true] i:nth-child(2){transform:translateY(-3px) rotate(-45deg)}
+@media (max-width:1080px){
+  .islinks{display:none}
+  .burger{display:block}
+  .island{padding-left:22px}
+}
+@media (max-width:640px){
+  .isbtns .btn{display:none}
+  .island{padding:8px 8px 8px 18px;gap:8px}
+  .isbtns{gap:5px}
+  .mini{min-width:42px;padding:0 11px;font-size:12px}
+  .burger{width:42px;height:42px}
+  .burger i{left:12px}
+}
+@media (max-width:420px){ .wordmark{font-size:20px;letter-spacing:.12em} }
+
+/* overlay menu */
+.sheet{position:fixed;inset:0;z-index:49;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:6px;
+  background:color-mix(in srgb, var(--ground) 86%, transparent);
+  backdrop-filter:blur(34px);-webkit-backdrop-filter:blur(34px)}
+.sheet a{font-family:var(--serif);font-size:clamp(34px,7vw,56px);font-weight:300;
+  color:var(--ink);text-decoration:none;padding:12px 24px;letter-spacing:-.02em;
+  opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease), transform .6s var(--ease)}
+.sheet.on a{opacity:1;transform:none}
+.sheet.on a:nth-child(1){transition-delay:.06s}
+.sheet.on a:nth-child(2){transition-delay:.11s}
+.sheet.on a:nth-child(3){transition-delay:.16s}
+.sheet.on a:nth-child(4){transition-delay:.21s}
+.sheet.on a:nth-child(5){transition-delay:.26s}
+
+/* ---------- buttons ---------- */
+.btn{font-family:var(--sans);font-size:15.5px;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;gap:14px;text-decoration:none;
+  padding:9px 9px 9px 28px;min-height:52px;border-radius:999px;border:1px solid transparent;
+  background:var(--accent);color:var(--accent-ink);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease), background .4s var(--ease);
+  box-shadow:0 1px 2px rgba(34,28,20,.10)}
+.btn .cap{display:flex;align-items:center;justify-content:center;width:34px;height:34px;
+  border-radius:50%;background:rgba(255,255,255,.22);flex:0 0 auto;
+  transition:transform .5s var(--ease), background .4s var(--ease)}
+.btn .cap svg{width:14px;height:14px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px -14px rgba(34,28,20,.45)}
+.btn:hover .cap{transform:translate(3px,-1px) scale(1.06);background:rgba(255,255,255,.32)}
+.btn:active{transform:scale(.985)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--hair-2);box-shadow:none;
+  padding-right:28px}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent);box-shadow:none}
+.btn.ghost .cap{background:var(--bezel)}
+.btn.plain{padding:14px 28px;min-height:48px}
+.btn.sm{font-size:13.5px;min-height:44px;padding:6px 6px 6px 20px}
+.btn.sm .cap{width:32px;height:32px}
+.btn.sm.ghost{padding-right:20px}
+.btn.wide{width:100%;justify-content:center;padding-left:28px}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.btnrow{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+
+/* ---------- hero (editorial split) ---------- */
+.hero{padding-top:clamp(112px,11vw,150px);padding-bottom:clamp(34px,3.6vw,56px)}
+.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(28px,4vw,76px);
+  align-items:end}
+.hero-side{align-self:stretch;display:flex;flex-direction:column;justify-content:flex-end;
+  border-left:1px solid var(--hair);padding-left:clamp(24px,2.8vw,48px)}
+@media (max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:30px;align-items:start}
+  .hero-side{border-left:0;padding-left:0;align-self:auto}
+}
+.hero h1{margin-bottom:26px}
+.hero-fig .core{aspect-ratio:1408/603}
+.hero-fig img{width:100%;height:100%;object-fit:cover}
+.hero-wide{margin-top:clamp(26px,2.8vw,42px)}
+
+/* ---------- bento ---------- */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(14px,1.5vw,22px)}
+@media (max-width:900px){.bento{grid-template-columns:repeat(6,1fr);gap:16px}}
+@media (max-width:620px){.bento{grid-template-columns:1fr;gap:16px}}
+.c3{grid-column:span 3} .c4{grid-column:span 4} .c5{grid-column:span 5}
+.c6{grid-column:span 6} .c7{grid-column:span 7} .c8{grid-column:span 8}
+.c12{grid-column:span 12}
+@media (max-width:900px){
+  .c3{grid-column:span 3} .c4,.c5{grid-column:span 3}
+  .c6,.c7,.c8,.c12{grid-column:span 6}
+}
+@media (max-width:620px){
+  .c3,.c4,.c5,.c6,.c7,.c8,.c12{grid-column:span 1}
+}
+
+/* claims band — a single editorial line, not a grid of number cards */
+.claims{display:flex;flex-wrap:wrap;
+  border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.claims > span{flex:1 1 210px;display:flex;align-items:center;gap:12px;
+  padding:24px 28px;font-size:15px;font-weight:500;border-left:1px solid var(--hair)}
+.claims > span:first-child{border-left:0;padding-left:0}
+.claims i{width:5px;height:5px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+:lang(zh) .claims > span{font-size:15.5px}
+@media (max-width:860px){
+  .claims > span{flex:1 1 44%;padding:18px 22px}
+  .claims > span:nth-child(3){border-left:0;padding-left:0}
+  .claims > span:nth-child(n+3){border-top:1px solid var(--hair)}
+}
+@media (max-width:540px){
+  .claims > span{flex:1 1 100%;border-left:0;padding:15px 0}
+  .claims > span:nth-child(2){border-top:1px solid var(--hair)}
+}
+
+/* ---------- section heads ---------- */
+.shead{max-width:min(760px,92vw)}
+.shead h2{margin-bottom:22px}
+.shead .lede{max-width:54ch}
+@media (max-width:860px){.shead{max-width:100%}}
+.srow{display:grid;grid-template-columns:1fr auto;gap:36px;align-items:end;
+  margin-bottom:clamp(30px,3.4vw,52px)}
+@media (max-width:860px){.srow{grid-template-columns:1fr;gap:26px;align-items:start}}
+.sblock{margin-bottom:clamp(30px,3.4vw,52px)}
+
+/* ---------- before / after ---------- */
+.ba{position:relative;aspect-ratio:3/2;cursor:ew-resize;user-select:none;
+  -webkit-user-select:none;touch-action:pan-y;background:var(--surface-2)}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.ba .top{clip-path:inset(0 0 0 var(--split,50%))}
+.ba .bar{position:absolute;top:0;bottom:0;left:var(--split,50%);width:1.5px;
+  background:rgba(255,255,255,.92);z-index:3;pointer-events:none}
+.ba .knob{position:absolute;top:50%;left:var(--split,50%);transform:translate(-50%,-50%);
+  width:58px;height:58px;border-radius:50%;z-index:4;pointer-events:none;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 6px 24px -6px rgba(0,0,0,.35), inset 0 1px 1px rgba(255,255,255,.9);
+  display:flex;align-items:center;justify-content:center;gap:5px}
+.ba .knob i{width:0;height:0;border-block:5px solid transparent}
+.ba .knob i:first-child{border-right:7px solid #2a2520}
+.ba .knob i:last-child{border-left:7px solid #2a2520}
+.ba .chip{position:absolute;bottom:20px;z-index:2;font-size:12px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:#fff;padding:9px 18px;border-radius:999px;
+  background:rgba(24,20,16,.62)}
+:lang(zh) .ba .chip{font-size:13px;letter-spacing:.12em}
+.ba .chip.l{left:20px} .ba .chip.r{right:20px}
+
+/* ---------- compare cards ---------- */
+.cmp .core{padding:34px 30px 32px;height:100%;display:flex;flex-direction:column}
+.cmp.win{--bezel:var(--accent-soft)}
+.cmp.win .core{background:var(--surface)}
+.cmp h3{margin-bottom:6px}
+.cmp .crown{font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px;display:block;min-height:17px}
+:lang(zh) .cmp .crown{font-size:13px;letter-spacing:.1em}
+.cmp .price{font-family:var(--serif);font-size:clamp(25px,2.2vw,32px);font-weight:300;
+  letter-spacing:-.025em;margin:16px 0 26px;line-height:1.15;white-space:nowrap}
+.cmp dl{margin:0;display:flex;flex-direction:column;gap:0;flex:1}
+.cmp .pair{display:flex;justify-content:space-between;gap:14px;padding:14px 0;
+  border-top:1px solid var(--hair);font-size:14.5px;min-height:54px;align-items:center}
+.cmp dt{color:var(--ink-3);flex:0 1 auto;min-width:0}
+.cmp dd{margin:0;text-align:right;font-weight:600;flex:0 0 auto}
+.cmp.win dd{color:var(--accent)}
+
+/* ---------- estimator ---------- */
+.est{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);
+  gap:clamp(16px,2vw,26px);align-items:start}
+@media (max-width:1060px){.est{grid-template-columns:1fr}}
+.pane .core{padding:clamp(24px,2.6vw,38px)}
+.pane + .pane{margin-top:clamp(14px,1.5vw,22px)}
+.pane-h{display:flex;align-items:baseline;gap:14px;margin-bottom:28px}
+.pane-h .ix{font-family:var(--serif);font-size:15px;font-weight:500;color:var(--accent);
+  letter-spacing:.08em;flex:0 0 auto}
+.pane-h h3{font-size:clamp(21px,2vw,26px)}
+
+.row{display:flex;align-items:center;gap:18px;padding:17px 0;border-top:1px solid var(--hair)}
+.row:first-of-type{border-top:0;padding-top:0}
+.row .lbl{flex:1;min-width:0}
+.row .lbl b{display:block;font-weight:600;font-size:16px}
+.row .lbl span{display:block;color:var(--ink-3);font-size:13.5px;margin-top:1px}
+:lang(zh) .row .lbl span{font-size:14px}
+.step{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.step button{font:inherit;font-size:19px;line-height:1;width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--hair-2);background:transparent;color:var(--ink);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .4s var(--ease), border-color .4s var(--ease), color .4s var(--ease)}
+.step button:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.step button:active{transform:scale(.94)}
+.step output{min-width:46px;text-align:center;font-family:var(--serif);font-weight:400;
+  font-size:28px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+
+.pv{position:relative;aspect-ratio:3/2;background:var(--surface-2);
+  border-radius:var(--r-sm);overflow:hidden;margin-bottom:24px}
+.pv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .75s var(--ease)}
+.pv img.on{opacity:1}
+.pv .cap{position:absolute;left:16px;bottom:16px;z-index:2;color:#fff;font-size:12.5px;
+  font-weight:600;letter-spacing:.09em;padding:9px 17px;border-radius:999px;
+  background:rgba(24,20,16,.62)}
+:lang(zh) .pv .cap{font-size:13.5px}
+
+.ch{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);margin:30px 0 14px}
+.ch:first-of-type{margin-top:0}
+:lang(zh) .ch{font-size:13px;letter-spacing:.12em}
+
+.doors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:540px){.doors{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.doors button{font:inherit;cursor:pointer;background:var(--bezel);color:inherit;padding:5px;
+  border:1px solid var(--hair);border-radius:var(--r-sm);text-align:left;
+  transition:border-color .45s var(--ease), transform .45s var(--ease), background .45s var(--ease)}
+.doors button:hover{transform:translateY(-3px)}
+.doors button[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft)}
+.doors .im{aspect-ratio:3/4;border-radius:11px;overflow:hidden;background:var(--surface-2);
+  display:flex;align-items:center;justify-content:center;padding:7px}
+.doors .im img{width:100%;height:100%;object-fit:contain}
+.doors span{display:block;font-size:13px;font-weight:600;padding:10px 8px 8px}
+
+.tints{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+@media (max-width:540px){.tints{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tints button{font:inherit;cursor:pointer;background:none;border:0;padding:0;color:inherit;
+  text-align:center;transition:transform .45s var(--ease)}
+.tints button:hover{transform:translateY(-3px)}
+.tints i{display:block;width:100%;aspect-ratio:1;border-radius:50%;
+  border:1px solid var(--hair-2);box-shadow:var(--gloss);
+  transition:box-shadow .45s var(--ease), border-color .45s var(--ease)}
+.tints button[aria-pressed=true] i{border-color:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-soft), var(--gloss)}
+.tints span{display:block;font-size:12px;color:var(--ink-3);margin-top:9px;line-height:1.35;
+  font-weight:500}
+.tints button[aria-pressed=true] span{color:var(--ink);font-weight:600}
+:lang(zh) .tints span{font-size:13px}
+
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chips button{font:inherit;font-size:14.5px;font-weight:500;cursor:pointer;color:inherit;
+  background:var(--bezel);border:1px solid var(--hair);border-radius:999px;
+  min-height:44px;padding:0 20px;
+  transition:border-color .45s var(--ease), background .45s var(--ease), color .45s var(--ease)}
+.chips button[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft);
+  color:var(--accent);font-weight:600}
+
+.extra{display:flex;align-items:center;gap:15px;padding:16px 0;border-top:1px solid var(--hair)}
+.extra input{width:21px;height:21px;accent-color:var(--accent);flex:0 0 auto;cursor:pointer}
+.extra label{flex:1;min-width:0;font-size:16px;cursor:pointer;font-weight:500;
+  min-height:44px;display:flex;align-items:center}
+.extra .amt{font-size:15px;color:var(--ink-3)}
+
+/* quote card */
+.ticket{position:sticky;top:122px}
+@media (max-width:1060px){.ticket{position:static}}
+.ticket .core{padding:clamp(26px,2.8vw,36px)}
+.ticket .k{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:18px}
+:lang(zh) .ticket .k{font-size:13px;letter-spacing:.12em}
+.fig{font-family:var(--serif);font-weight:300;font-size:clamp(36px,4vw,50px);line-height:1.02;
+  letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.figsub{font-size:14px;color:var(--ink-3);margin-top:11px}
+.ls{margin-top:28px}
+.l{display:flex;justify-content:space-between;gap:18px;padding:12px 0;
+  border-top:1px solid var(--hair);font-size:15px}
+.l .d{color:var(--ink-3);min-width:0}
+.l .v{font-variant-numeric:tabular-nums;flex:0 0 auto;font-weight:600}
+.l.sum{font-size:16.5px;padding-top:16px;border-top-color:var(--hair-2)}
+.l.sum .d{color:var(--ink);font-weight:600}
+.note{background:var(--surface-2);border-radius:var(--r-sm);padding:15px 17px;
+  font-size:13.5px;line-height:1.6;color:var(--ink-2);margin-top:22px}
+:lang(zh) .note{font-size:14px;line-height:1.8}
+.ticket .btn{margin-top:20px}
+
+/* owner strip */
+.owner{margin-top:clamp(14px,1.5vw,22px)}
+.owner > summary{cursor:pointer;list-style:none;padding:20px 24px;display:flex;
+  align-items:center;gap:12px;font-size:14.5px;font-weight:600;min-height:44px}
+.owner > summary::-webkit-details-marker{display:none}
+.owner > summary::before{content:"";width:7px;height:7px;flex:0 0 auto;
+  border-right:1.6px solid var(--accent);border-bottom:1.6px solid var(--accent);
+  transform:rotate(-45deg);transition:transform .45s var(--ease)}
+.owner[open] > summary::before{transform:rotate(45deg)}
+.owner:not([open]) > .content{display:none}
+.owner > .content{padding:0 24px 24px}
+.badge{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--accent);color:var(--accent-ink);padding:4px 10px;border-radius:999px;
+  margin-left:auto;flex:0 0 auto}
+:lang(zh) .badge{font-size:12px;letter-spacing:.08em}
+.pr{display:flex;align-items:center;gap:14px;padding:10px 0;border-top:1px solid var(--hair)}
+.pr:first-child{border-top:0}
+.pr label{flex:1;min-width:0;font-size:14.5px}
+.pr .u{color:var(--ink-3);font-size:14px}
+.pr input{font:inherit;font-size:15px;width:98px;flex:0 0 auto;text-align:right;
+  padding:10px 12px;border-radius:11px;border:1px solid var(--hair-2);min-height:44px;
+  background:var(--surface);color:var(--ink);font-variant-numeric:tabular-nums}
+.pr input:focus{border-color:var(--accent);outline:none}
+
+/* ---------- process ---------- */
+.rail{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--hair)}
+.rstep{position:relative;padding:40px 32px 0 0}
+.rstep + .rstep{padding-left:32px;border-left:1px solid var(--hair)}
+.rstep::before{content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;
+  border-radius:50%;background:var(--accent)}
+.rstep + .rstep::before{left:32px}
+.rnum{font-family:var(--serif);font-size:16px;letter-spacing:.24em;color:var(--accent);
+  margin-bottom:20px}
+.rstep h4{margin-bottom:11px}
+.rstep p{font-size:15px;color:var(--ink-2);line-height:1.72;max-width:36ch}
+:lang(zh) .rstep p{font-size:15.5px;line-height:1.9}
+@media (max-width:900px){
+  .rail{grid-template-columns:1fr 1fr;row-gap:8px}
+  .rstep:nth-child(3){padding-left:0;border-left:0}
+  .rstep:nth-child(3)::before{left:0}
+  .rstep:nth-child(n+3){border-top:1px solid var(--hair);margin-top:26px;padding-top:40px}
+}
+@media (max-width:560px){
+  .rail{grid-template-columns:1fr;row-gap:0}
+  .rstep{padding:30px 0 0!important;border-left:0!important;margin-top:0!important;
+    border-top:1px solid var(--hair)}
+  .rstep:first-child{border-top:0}
+  .rstep::before{left:0!important}
+}
+.proc-legacy .ix{font-family:var(--serif);font-size:38px;font-weight:300;color:var(--accent);
+  line-height:1;letter-spacing:-.03em;margin-bottom:22px}
+.proc-legacy h4{margin-bottom:10px}
+
+/* ---------- gallery ---------- */
+.gcard{height:100%}
+.gcard .core{height:100%;display:flex;flex-direction:column}
+.gcard .im{overflow:hidden;background:var(--surface-2);flex:0 0 auto}
+.gcard .im img{width:100%;height:100%;object-fit:cover;
+  transition:transform 1.1s var(--ease)}
+.gcard:hover .im img{transform:scale(1.035)}
+.gcard .meta{padding:26px 28px 28px;flex:1;display:flex;flex-direction:column}
+.gcard h4{font-size:19px;margin-bottom:5px}
+.gcard .loc{font-size:13.5px;color:var(--ink-3);margin-bottom:auto;padding-bottom:20px}
+.gcard .f{display:flex;gap:26px;flex-wrap:wrap;border-top:1px solid var(--hair);padding-top:17px}
+.gcard .f b{display:block;font-family:var(--serif);font-weight:400;font-size:22px;
+  line-height:1.1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.gcard .f span{display:block;color:var(--ink-3);font-size:12px;letter-spacing:.11em;
+  text-transform:uppercase;font-weight:600;margin-top:4px}
+:lang(zh) .gcard .f span{font-size:12.5px;letter-spacing:.08em}
+
+/* ---------- split ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,28px);align-items:stretch}
+@media (max-width:900px){.split{grid-template-columns:1fr}}
+.split .tall .core{height:100%;min-height:380px}
+.split .tall img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+@media (max-width:900px){.split .tall .core{min-height:0;aspect-ratio:4/3}}
+.split-txt{display:flex;flex-direction:column;justify-content:center}
+.split .wide{margin-top:28px}
+.split .wide .core{aspect-ratio:16/9}
+.split .wide img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- voices ---------- */
+.voice .core{padding:34px 32px;height:100%;display:flex;flex-direction:column}
+.voice .st{color:var(--accent);margin-bottom:24px;display:flex;gap:5px}
+.voice .st svg{width:13px;height:13px;display:block}
+.voice blockquote{margin:0 0 26px;font-family:var(--serif);font-size:clamp(21px,2vw,26px);
+  line-height:1.4;font-weight:300;letter-spacing:-.012em;flex:1}
+:lang(zh) .voice blockquote{font-weight:400;line-height:1.7;letter-spacing:0}
+.voice .who{font-size:13.5px;color:var(--ink-3);border-top:1px solid var(--hair);padding-top:19px}
+.voice .who b{display:block;color:var(--ink);font-weight:600;font-size:15px;margin-bottom:2px}
+@media (min-width:901px){.voice.mid{margin-top:34px}}
+
+/* ---------- faq ---------- */
+.faq .core{padding:8px clamp(22px,2.6vw,40px)}
+.faq details{border-top:1px solid var(--hair)}
+.faq details:first-child{border-top:0}
+.faq summary{cursor:pointer;list-style:none;padding:28px 50px 28px 0;position:relative;
+  font-family:var(--serif);font-size:clamp(20px,2.1vw,26px);font-weight:400;
+  letter-spacing:-.01em;line-height:1.3;transition:color .4s var(--ease)}
+:lang(zh) .faq summary{font-weight:500;line-height:1.5}
+.faq summary:hover{color:var(--accent)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";position:absolute;right:8px;top:50%;width:11px;height:11px;
+  margin-top:-8px;border-right:1.5px solid var(--ink-3);border-bottom:1.5px solid var(--ink-3);
+  transform:rotate(45deg);transition:transform .45s var(--ease)}
+.faq details[open] summary::after{transform:rotate(-135deg);margin-top:-3px}
+.faq details:not([open]) > .content{display:none}
+.faq .content{padding:0 54px 30px 0;color:var(--ink-2);font-size:16.5px;line-height:1.78}
+:lang(zh) .faq .content{font-size:16px;line-height:1.95}
+
+/* ---------- booking ---------- */
+.book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);
+  gap:clamp(16px,2vw,28px);align-items:start}
+@media (max-width:980px){.book{grid-template-columns:1fr}}
+.fld{margin-bottom:18px}
+.fld label{display:block;font-size:12.5px;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:9px}
+:lang(zh) .fld label{font-size:13px;letter-spacing:.09em}
+.fld input,.fld select,.fld textarea{font:inherit;font-family:var(--sans);font-size:16px;
+  width:100%;padding:15px 17px;border-radius:14px;border:1px solid var(--hair-2);
+  min-height:52px;background:var(--surface);color:var(--ink);
+  transition:border-color .4s var(--ease)}
+.fld select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:46px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.6L6 6.4L11 1.6' fill='none' stroke='%23998f85' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 17px center;background-size:12px 8px}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--accent);outline:none}
+.fld textarea{min-height:104px;resize:vertical}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:500px){.duo{grid-template-columns:1fr}}
+.warn{border-radius:14px;padding:15px 18px;font-size:14.5px;margin-bottom:18px;
+  background:var(--accent-soft);color:var(--ink);border:1px solid var(--hair)}
+.steps-next{counter-reset:n;list-style:none;margin:22px 0 0;padding:0}
+.steps-next li{counter-increment:n;position:relative;padding-left:50px;padding-bottom:24px;
+  font-size:15.5px;color:var(--ink-2);line-height:1.6}
+.steps-next li:last-child{padding-bottom:0}
+.steps-next li::before{content:counter(n);position:absolute;left:0;top:-1px;width:32px;height:32px;
+  border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;
+  align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--sans)}
+.steps-next li b{color:var(--ink);font-weight:600}
+
+.done{text-align:center;max-width:640px;margin:0 auto}
+.done .ok{width:68px;height:68px;border-radius:50%;background:var(--good-soft);color:var(--good);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 26px}
+.recap .core{padding:26px 28px;text-align:left;margin-top:30px}
+.recap .k{display:flex;justify-content:space-between;gap:20px;padding:9px 0;font-size:14.5px;
+  border-top:1px solid var(--hair)}
+.recap .k:first-child{border-top:0}
+.recap .k span:first-child{color:var(--ink-3)}
+.recap .k span:last-child{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;
+  word-break:break-word}
+
+/* ---------- dashboard ---------- */
+.dash .core{overflow:hidden}
+.dash-bar{display:flex;align-items:center;gap:14px;padding:20px 26px;
+  border-bottom:1px solid var(--hair);background:var(--surface-2);flex-wrap:wrap}
+.dash-bar .t{font-weight:600;font-size:15.5px}
+.dash-bar .fake{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);border:1px solid var(--hair-2);padding:5px 12px;border-radius:999px;
+  margin-left:auto}
+:lang(zh) .dash-bar .fake{font-size:12.5px;letter-spacing:.08em}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--hair)}
+@media (max-width:760px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{padding:26px}
+.tile + .tile{border-left:1px solid var(--hair)}
+@media (max-width:760px){
+  .tile:nth-child(odd) + .tile{border-left:1px solid var(--hair)}
+  .tile:nth-child(3){border-left:0;border-top:1px solid var(--hair)}
+  .tile:nth-child(4){border-top:1px solid var(--hair)}
+}
+.tile b{display:block;font-family:var(--serif);font-size:clamp(30px,3vw,40px);font-weight:300;
+  line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.tile span{display:block;font-size:12px;color:var(--ink-3);margin-top:11px;
+  letter-spacing:.11em;text-transform:uppercase;font-weight:600}
+:lang(zh) .tile span{font-size:12.5px;letter-spacing:.08em}
+.tile em{font-style:normal;font-size:13px;color:var(--good);font-weight:600;margin-left:7px}
+.tbl{width:100%;border-collapse:collapse;font-size:14.5px}
+.tbl th{text-align:left;padding:14px 22px;font-size:12px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--hair);
+  white-space:normal}
+:lang(zh) .tbl th{font-size:12.5px;letter-spacing:.06em}
+.tbl td{padding:17px 22px;border-bottom:1px solid var(--hair);white-space:nowrap}
+.tbl tbody tr:last-child td{border-bottom:0}
+.tbl tbody tr{transition:background .3s var(--ease)}
+.tbl tbody tr:hover{background:var(--surface-2)}
+.tbl .nm{font-weight:600}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;
+  padding:5px 13px;border-radius:999px;white-space:nowrap}
+.pill.new{background:var(--accent-soft);color:var(--accent)}
+.pill.ok{background:var(--good-soft);color:var(--good)}
+.pill.wait{background:var(--second-soft);color:var(--second)}
+/* phone: table becomes stacked cards, never a sideways scroll */
+@media (max-width:720px){
+  .tbl thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .tbl tr{display:block;padding:18px 22px;border-bottom:1px solid var(--hair)}
+  .tbl tbody tr:last-child{border-bottom:0}
+  .tbl td{display:flex;justify-content:space-between;gap:16px;padding:5px 0;border:0;
+    white-space:normal}
+  .tbl td::before{content:attr(data-h);color:var(--ink-3);font-size:12.5px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;flex:0 0 auto}
+}
+
+/* ---------- brand kit ---------- */
+.fab{position:fixed;left:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:45;
+  font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;display:flex;
+  align-items:center;gap:11px;padding:0 22px;min-height:52px;border-radius:999px;
+  background:var(--ink);color:var(--ground);border:0;box-shadow:var(--lift-lg);
+  transition:transform .5s var(--ease)}
+.fab:hover{transform:translateY(-3px)}
+.fab:active{transform:scale(.97)}
+.kit{position:fixed;left:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:46;
+  width:min(340px,calc(100vw - 40px));padding:6px}
+.kit .core{padding:26px}
+.kit h4{margin-bottom:6px}
+.kit .fine{margin-bottom:22px}
+.kit label{display:block;font-size:12px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);margin:20px 0 10px}
+.kit label:first-of-type{margin-top:0}
+:lang(zh) .kit label{font-size:13px;letter-spacing:.1em}
+.kit input[type=text]{font:inherit;font-family:var(--sans);font-size:16px;width:100%;
+  padding:13px 15px;border-radius:13px;min-height:50px;
+  border:1px solid var(--hair-2);background:var(--ground);color:var(--ink)}
+.kit input:focus{border-color:var(--accent);outline:none}
+.hues{display:flex;gap:11px}
+.hues button{width:44px;height:44px;border-radius:50%;border:2px solid transparent;
+  cursor:pointer;padding:0;box-shadow:var(--gloss);transition:transform .4s var(--ease)}
+.hues button:hover{transform:scale(1.09)}
+.hues button[aria-pressed=true]{border-color:var(--ink);
+  box-shadow:0 0 0 2px var(--surface) inset, var(--gloss)}
+.kit .acts{display:flex;gap:10px;margin-top:24px}
+.kit .acts .btn{flex:1;justify-content:center}
+.kitx{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;
+  border:0;background:var(--bezel);color:var(--ink-3);cursor:pointer;font-size:17px;line-height:1;
+  display:flex;align-items:center;justify-content:center}
+@media (max-width:620px){
+  .fab{left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));
+    padding:0 18px;min-height:48px;font-size:13.5px}
+  .kit{left:16px;right:16px;width:auto;
+    bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--hair);padding-block:clamp(52px,5.4vw,80px) 36px;
+  position:relative;z-index:2}
+.ftop{display:grid;grid-template-columns:1.3fr 1.15fr .85fr auto;gap:clamp(26px,3vw,60px);
+  margin-bottom:44px}
+@media (max-width:900px){.ftop{grid-template-columns:1fr 1fr;gap:38px}}
+@media (max-width:560px){.ftop{grid-template-columns:1fr}}
+.ftop h5{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);margin:0 0 18px}
+:lang(zh) .ftop h5{font-size:13px;letter-spacing:.12em}
+.ftop .wordmark{font-size:30px;margin-bottom:18px;display:inline-block;padding:0}
+.ftop ul{list-style:none;margin:0;padding:0}
+.ftop li{font-size:15px;color:var(--ink-2);padding:4px 0}
+#cityList{columns:2;column-gap:26px}
+#cityList li{break-inside:avoid}
+.ftop li a{color:inherit;text-decoration:none;transition:color .4s var(--ease)}
+.ftop li a:hover{color:var(--accent)}
+.qr .box{width:122px;height:122px;background:#fff;border-radius:14px;padding:9px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.qr .box svg{width:100%;height:100%;display:block}
+.qr p{font-size:12px;color:var(--ink-3);letter-spacing:.09em;text-transform:uppercase;
+  font-weight:600;max-width:122px;line-height:1.5}
+:lang(zh) .qr p{font-size:13px;letter-spacing:.05em}
+.fbot{border-top:1px solid var(--hair);padding-top:30px;display:flex;
+  justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+.fbot a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--hair-2)}
+.fbot a:hover{color:var(--accent);border-color:var(--accent)}
+.sig{font-size:14px;color:var(--ink-3)}
+.sig b{color:var(--ink-2);font-weight:600}
+
+/* ---------- entries: visible unless script hides them ---------- */
+.rise.pre{opacity:0;transform:translateY(56px);filter:blur(9px)}
+.rise.pre.in{opacity:1;transform:none;filter:none;
+  transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease)}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ======================= ISLAND NAV ======================= -->
+<div class="navzone">
+  <nav class="island" id="island">
+    <a href="#top" class="wordmark" id="markTop">CABEN</a>
+    <div class="islinks">
+      <a href="#compare" data-t="nav1">Why reface</a>
+      <a href="#estimate" data-t="nav2">Estimate</a>
+      <a href="#work" data-t="nav3">Our work</a>
+      <a href="#faq" data-t="nav4">FAQ</a>
+    </div>
+    <div class="isbtns">
+      <button class="mini" id="langBtn" type="button">中文</button>
+      <button class="mini" id="themeBtn" type="button" aria-label="Toggle dark mode">◐</button>
+      <a href="#book" class="btn sm" data-nt="navcta">
+        <span data-t="navcta">Book a visit</span>
+        <span class="cap"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <button class="burger" id="burger" type="button" aria-expanded="false" aria-label="Menu">
+        <i></i><i></i>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <a href="#compare" data-t="nav1">Why reface</a>
+  <a href="#estimate" data-t="nav2">Estimate</a>
+  <a href="#work" data-t="nav3">Our work</a>
+  <a href="#faq" data-t="nav4">FAQ</a>
+  <a href="#book" data-t="navcta">Book a visit</a>
+</div>
+
+<!-- ======================= HERO ======================= -->
+<header class="wrap hero" id="top">
+  <div class="hero-grid">
+    <div>
+      <span class="tag"><i></i><span data-t="heroTag">Bay Area cabinet refacing</span></span>
+      <h1 data-t="heroH1">Keep the kitchen. Change the doors.</h1>
+    </div>
+    <div class="hero-side">
+      <p class="lede" data-t="heroLede">We replace only the doors, drawer fronts and hardware. Your cabinet boxes, countertop and plumbing stay exactly where they are — so the work takes one day instead of six weeks, and needs no permit.</p>
+      <div class="btnrow">
+        <a href="#estimate" class="btn">
+          <span data-t="heroCta1">Get an instant estimate</span>
+          <span class="cap"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+        <a href="#work" class="btn ghost plain" data-t="heroCta2">See our work</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="bez hero-fig hero-wide rise">
+    <div class="core"><img src="images/hero-1.jpg" alt="A refaced kitchen with warm white doors and brass hardware" fetchpriority="high"></div>
+  </div>
+</header>
+
+<!-- ======================= STATS BENTO ======================= -->
+<div class="wrap">
+  <div class="claims rise">
+    <span><i></i><span data-t="cl1">Installed in one day</span></span>
+    <span><i></i><span data-t="cl2">No permit required</span></span>
+    <span><i></i><span data-t="cl3">Your cabinet boxes stay</span></span>
+    <span><i></i><span data-t="cl4">Ten-year warranty</span></span>
+  </div>
+</div>
+
+<!-- ======================= BEFORE / AFTER ======================= -->
+<section class="wrap">
+  <div class="srow rise">
+    <div class="shead">
+      <span class="tag"><i></i><span data-t="baTag">The same kitchen</span></span>
+      <h2 data-t="baH2">One day of work. Drag to see it.</h2>
+    </div>
+    <p class="fine" style="max-width:26ch" data-t="baHint">Drag the handle, or use the arrow keys</p>
+  </div>
+  <div class="bez rise">
+    <div class="core">
+      <div class="ba" id="ba" role="slider" tabindex="0" aria-label="Before and after comparison"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+        <img src="images/before.jpg" alt="Kitchen before refacing, dated honey oak doors">
+        <img src="images/after.jpg" class="top" alt="The same kitchen after refacing, deep navy doors">
+        <span class="chip l" data-t="baBefore">Before</span>
+        <span class="chip r" data-t="baAfter">After</span>
+        <div class="bar"></div>
+        <div class="knob"><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= COMPARE ======================= -->
+<section class="wrap" id="compare">
+  <div class="sblock shead rise">
+    <span class="tag"><i></i><span data-t="cmpTag">Three ways to change a kitchen</span></span>
+    <h2 data-t="cmpH2">Why most Bay Area kitchens don't need a remodel</h2>
+    <p class="lede" style="margin-top:22px" data-t="cmpLede">If your boxes are solid — and in most homes built after 1980 they are — the doors are the only part doing the aging.</p>
+  </div>
+  <div class="bento rise" id="cmpGrid"></div>
+</section>
+
+<!-- ======================= ESTIMATOR ======================= -->
+<section class="wrap" id="estimate">
+  <div class="srow rise">
+    <div class="shead">
+      <span class="tag"><i></i><span data-t="estTag">Instant estimate</span></span>
+      <h2 data-t="estH2">Price your kitchen in about a minute</h2>
+    </div>
+    <button class="btn ghost plain" id="demoBtn" type="button" data-t="estDemo">Reset to the example</button>
+  </div>
+
+  <div class="est">
+    <div>
+      <div class="bez pane rise">
+        <div class="core">
+          <div class="pane-h"><span class="ix">01</span><h3 data-t="p1H">What's in your kitchen</h3></div>
+          <div class="row">
+            <div class="lbl"><b data-t="cUpper">Upper cabinet doors</b><span data-t="cUpperS">Wall cabinets above the counter</span></div>
+            <div class="step">
+              <button type="button" data-c="upper" data-d="-1" aria-label="Fewer upper doors">−</button>
+              <output id="o_upper" class="num">0</output>
+              <button type="button" data-c="upper" data-d="1" aria-label="More upper doors">+</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="lbl"><b data-t="cLower">Lower cabinet doors</b><span data-t="cLowerS">Base cabinets below the counter</span></div>
+            <div class="step">
+              <button type="button" data-c="lower" data-d="-1" aria-label="Fewer lower doors">−</button>
+              <output id="o_lower" class="num">0</output>
+              <button type="button" data-c="lower" data-d="1" aria-label="More lower doors">+</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="lbl"><b data-t="cDrawer">Drawer fronts</b><span data-t="cDrawerS">Counted separately from doors</span></div>
+            <div class="step">
+              <button type="button" data-c="drawer" data-d="-1" aria-label="Fewer drawer fronts">−</button>
+              <output id="o_drawer" class="num">0</output>
+              <button type="button" data-c="drawer" data-d="1" aria-label="More drawer fronts">+</button>
+            </div>
+          </div>
+          <p class="fine" style="margin-top:22px" data-t="p1Note">Pre-filled with a typical 24-front kitchen — change any number.</p>
+        </div>
+      </div>
+
+      <div class="bez pane rise">
+        <div class="core">
+          <div class="pane-h"><span class="ix">02</span><h3 data-t="p2H">Choose how it should look</h3></div>
+          <div class="pv" id="pv"><span class="cap" id="pvCap">Pure White</span></div>
+          <p class="ch" data-t="p2Door">Door style</p>
+          <div class="doors" id="doorGrid"></div>
+          <p class="ch" data-t="p2Finish">Finish — the room above updates</p>
+          <div class="tints" id="tintGrid"></div>
+          <p class="ch" data-t="p2Hw">Hardware</p>
+          <div class="chips" id="hwRow"></div>
+          <p class="ch" data-t="p2Add">Replace at the same time</p>
+          <div class="extra">
+            <input type="checkbox" id="addFaucet">
+            <label for="addFaucet" data-t="addFaucet">Kitchen faucet</label>
+            <span class="amt num" id="amtFaucet"></span>
+          </div>
+          <div class="extra">
+            <input type="checkbox" id="addSink">
+            <label for="addSink" data-t="addSink">Sink</label>
+            <span class="amt num" id="amtSink"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ticket">
+      <div class="bez rise">
+        <div class="core">
+          <p class="k" data-t="qCap">Your estimate</p>
+          <div class="fig num" id="figure">—</div>
+          <p class="figsub" id="figureSub"></p>
+          <div class="ls" id="breakdown"></div>
+          <div class="note" data-t="qDisc">An estimate, not a quote. We confirm the final price after measuring, and nothing is owed until you approve it.</div>
+          <a href="#book" class="btn wide">
+            <span data-t="qCta">Book a free measurement</span>
+            <span class="cap"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </div>
+      </div>
+
+      <details class="bez flat owner">
+        <summary>
+          <span data-t="ownerPrice">Price list — edit it and watch the estimate move</span>
+          <span class="badge" data-t="ownerTag">Owner</span>
+        </summary>
+        <div class="content">
+          <div id="priceRows"></div>
+          <p class="fine" style="margin-top:16px" data-t="ownerPriceNote">In the live version this sits in the admin dashboard, not on the customer page.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PROCESS ======================= -->
+<section class="wrap">
+  <div class="sblock shead rise">
+    <span class="tag"><i></i><span data-t="prTag">How it works</span></span>
+    <h2 data-t="prH2">Four steps, two weeks, one day of mess</h2>
+  </div>
+  <div class="rail rise" id="procGrid"></div>
+</section>
+
+<!-- ======================= GALLERY ======================= -->
+<section class="wrap" id="work">
+  <div class="sblock shead rise">
+    <span class="tag"><i></i><span data-t="wkTag">Recent work</span></span>
+    <h2 data-t="wkH2">Four kitchens, four weekends</h2>
+  </div>
+  <div class="bento rise" id="galGrid"></div>
+</section>
+
+<!-- ======================= INSTALL SPLIT ======================= -->
+<section class="wrap">
+  <div class="split rise">
+    <div class="bez tall">
+      <div class="core"><img src="images/install-1.jpg" alt="An installer fitting a new white shaker door" loading="lazy"></div>
+    </div>
+    <div class="split-txt">
+      <span class="tag"><i></i><span data-t="inTag">Installation day</span></span>
+      <h2 style="margin-bottom:24px" data-t="inH2">Your kitchen stays a kitchen</h2>
+      <p class="lede" data-t="inP">Nothing comes out of your cabinets. No dust sheets over the whole house, no skip in the driveway, no weeks of takeout. Two installers arrive in the morning and are gone by late afternoon.</p>
+      <div class="bez wide">
+        <div class="core"><img src="images/install-2.jpg" alt="Hands fitting a brass bar pull to a navy drawer front" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= VOICES ======================= -->
+<section class="wrap">
+  <div class="sblock shead rise">
+    <span class="tag"><i></i><span data-t="tsTag">What people say</span></span>
+    <h2 data-t="tsH2">The part they didn't expect</h2>
+  </div>
+  <div class="bento rise" id="voiceGrid"></div>
+</section>
+
+<!-- ======================= FAQ ======================= -->
+<section class="wrap" id="faq">
+  <div class="sblock shead rise">
+    <span class="tag"><i></i><span data-t="fqTag">Questions</span></span>
+    <h2 data-t="fqH2">The things people ask on the phone</h2>
+  </div>
+  <div class="bez faq rise"><div class="core" id="faqList"></div></div>
+</section>
+
+<!-- ======================= BOOKING ======================= -->
+<section class="wrap" id="book">
+  <div class="sblock shead rise">
+    <span class="tag"><i></i><span data-t="bkTag">Free measurement</span></span>
+    <h2 data-t="bkH2">Book a visit</h2>
+    <p class="lede" style="margin-top:22px" data-t="bkLede">Forty minutes, no charge, no obligation. You get a fixed written price the same week.</p>
+  </div>
+
+  <div class="book" id="bookArea">
+    <div class="bez rise">
+      <div class="core" style="padding:clamp(26px,2.8vw,40px)">
+        <form id="bookForm" novalidate>
+          <div class="warn" id="formErr" hidden></div>
+          <div class="fld"><label for="f_name" data-t="fName">Name</label>
+            <input type="text" id="f_name" autocomplete="name"></div>
+          <div class="duo">
+            <div class="fld"><label for="f_phone" data-t="fPhone">Mobile</label>
+              <input type="tel" id="f_phone" autocomplete="tel"></div>
+            <div class="fld"><label for="f_city" data-t="fCity">City</label>
+              <select id="f_city"></select></div>
+          </div>
+          <div class="fld"><label for="f_addr" data-t="fAddr">Street address</label>
+            <input type="text" id="f_addr" autocomplete="address-line1"></div>
+          <div class="fld"><label for="f_time" data-t="fTime">Preferred time</label>
+            <select id="f_time"></select></div>
+          <div class="fld"><label for="f_note" data-t="fNote">Anything we should know</label>
+            <textarea id="f_note"></textarea></div>
+          <button type="submit" class="btn wide">
+            <span data-t="fSubmit">Request my measurement</span>
+            <span class="cap"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="bez flat rise">
+      <div class="core" style="padding:clamp(26px,2.8vw,38px)">
+        <h3 data-t="nxH">What happens next</h3>
+        <ol class="steps-next">
+          <li data-t="nx1"><b>Within one business day</b> — we call to agree a time that suits you.</li>
+          <li data-t="nx2"><b>On the visit</b> — we measure every front and show you real door samples in your own light.</li>
+          <li data-t="nx3"><b>Within 48 hours</b> — a fixed written price. No allowances, no hourly rates.</li>
+          <li data-t="nx4"><b>If you say yes</b> — about two weeks to build, then one day to install.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="done" id="doneBox" hidden>
+    <div class="ok">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4.5 12.5l5 5 10-11" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2 style="margin-bottom:18px" data-t="dnH">Here's your estimate</h2>
+    <p class="lede" style="margin:0 auto" data-t="dnP">Nothing was sent — this is a demo. In the live version this request lands in the dashboard below and the customer gets a text.</p>
+    <div class="bez recap"><div class="core" id="recapCard"></div></div>
+    <div class="btnrow" style="justify-content:center">
+      <button class="btn ghost plain" id="copyBtn" type="button" data-t="dnCopy">Copy these details</button>
+      <button class="btn ghost plain" id="againBtn" type="button" data-t="dnAgain">Start over</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= DASHBOARD ======================= -->
+<section class="wrap" id="owner">
+  <div class="sblock shead rise">
+    <span class="tag"><i></i><span data-t="dsTag">For the business owner</span></span>
+    <h2 data-t="dsH2">What you see when a request comes in</h2>
+    <p class="lede" style="margin-top:22px" data-t="dsLede">The customer gets a price. You get a qualified lead with the job already scoped — panel count, finish, hardware and estimated value, before you've driven anywhere.</p>
+  </div>
+
+  <div class="bez dash rise">
+    <div class="core">
+      <div class="dash-bar">
+        <span class="t" id="dashTitle">CABEN · Leads</span>
+        <span class="fake" data-t="dsFake">Sample data</span>
+      </div>
+      <div class="tiles">
+        <div class="tile"><b class="num">14</b><span data-t="ds1">Leads this week</span></div>
+        <div class="tile"><b class="num">$4,180</b><span data-t="ds2">Average estimate</span></div>
+        <div class="tile"><b class="num">61%</b><span data-t="ds3">Booked a visit</span></div>
+        <div class="tile"><b class="num">3.2<em>min</em></b><span data-t="ds4">Average time on site</span></div>
+      </div>
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th scope="col" data-t="dh1">Received</th>
+            <th scope="col" data-t="dh2">Customer</th>
+            <th scope="col" data-t="dh3">City</th>
+            <th scope="col" data-t="dh4">Fronts</th>
+            <th scope="col" data-t="dh5">Finish</th>
+            <th scope="col" data-t="dh6">Estimate</th>
+            <th scope="col" data-t="dh7">Status</th>
+          </tr>
+        </thead>
+        <tbody id="leadRows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= FOOTER ======================= -->
+<footer>
+  <div class="wrap">
+    <div class="ftop">
+      <div>
+        <span class="wordmark" id="markFoot">CABEN</span>
+        <p class="fine" style="max-width:34ch" data-t="ftAbout">Kitchen cabinet refacing across the South Bay and Peninsula. Doors, drawer fronts and hardware only — no demolition, no permit, no weeks without a kitchen.</p>
+      </div>
+      <div>
+        <h5 data-t="ftAreas">Service area</h5>
+        <ul id="cityList"></ul>
+      </div>
+      <div>
+        <h5 data-t="ftLinks">Explore</h5>
+        <ul>
+          <li><a href="#compare" data-t="nav1">Why reface</a></li>
+          <li><a href="#estimate" data-t="nav2">Estimate</a></li>
+          <li><a href="#work" data-t="nav3">Our work</a></li>
+          <li><a href="#owner" data-t="ftOwner">Owner view</a></li>
+        </ul>
+      </div>
+      <div class="qr">
+        <div class="box" id="qrBox"></div>
+        <p data-t="ftQr">Scan to open on your phone</p>
+      </div>
+    </div>
+    <div class="fbot">
+      <p class="fine" style="max-width:60ch" data-t="ftDisc">Caben is a fictional brand built as a demonstration. The projects, reviews and prices shown are illustrative, not real.</p>
+      <p class="sig">Designed and built by <b>Ryan Yan</b>, Data Analyst ·
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ======================= BRAND KIT ======================= -->
+<button class="fab" id="fab" type="button">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <path d="M2.5 11.3L10.8 3l2.2 2.2-8.3 8.3H2.5v-2.2z" stroke="currentColor"
+          stroke-width="1.3" stroke-linejoin="round"/>
+  </svg>
+  <span data-t="kitFab">Make it yours</span>
+</button>
+
+<div class="bez kit" id="kitPanel" hidden>
+  <div class="core">
+    <button class="kitx" id="kitClose" type="button" aria-label="Close">×</button>
+    <h4 data-t="kitH">See your own name on it</h4>
+    <p class="fine" data-t="kitP">Type a company name and pick a colour. The whole page changes as you type.</p>
+    <label for="kitName" data-t="kitName">Company name</label>
+    <input type="text" id="kitName" maxlength="18" placeholder="CABEN" autocomplete="off">
+    <label data-t="kitColor">Brand colour</label>
+    <div class="hues" id="kitHues"></div>
+    <div class="acts">
+      <button class="btn sm ghost plain" id="kitReset" type="button" data-t="kitReset">Reset</button>
+      <button class="btn sm plain" id="kitDone" type="button" data-t="kitDone">Done</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+/* ============================================================================
+   CABEN — kitchen cabinet refacing template
+   One HTML file plus an images/ folder. No build step, no framework.
+   Everything a business needs to change lives in CONFIG, just below.
+   ========================================================================= */
+
+var CONFIG = {
+
+  /* ---- the business --------------------------------------------------- */
+  brand:  "CABEN",
+  area:   "San Francisco Bay Area",
+  cities: ["San Jose","Santa Clara","Sunnyvale","Fremont","Palo Alto",
+           "Mountain View","Cupertino","Milpitas","Campbell","Union City"],
+
+  /* ---- prices, in US dollars ------------------------------------------ */
+  prices: {
+    upper:  85, lower:  95, drawer: 65, handle: 14,
+    l1:    450, l2:    700, l3:    950,
+    faucet:380, sink:  540, range:  10
+  },
+
+  /* ---- the catalogue --------------------------------------------------- */
+  styles: [
+    { id:"shaker", img:"images/door-shaker.jpg", en:"Shaker",       zh:"Shaker 方框" },
+    { id:"slab",   img:"images/door-slab.jpg",   en:"Slab",         zh:"平板" },
+    { id:"raised", img:"images/door-raised.jpg", en:"Raised panel", zh:"凸面板" },
+    { id:"glass",  img:"images/door-glass.jpg",  en:"Glass front",  zh:"玻璃门" }
+  ],
+  finishes: [
+    { id:"white",    hex:"#F0EDE7", img:"images/color-white.jpg",    en:"Pure White",  zh:"纯白" },
+    { id:"greige",   hex:"#CFC6B8", img:"images/color-greige.jpg",   en:"Greige",      zh:"米灰" },
+    { id:"fog",      hex:"#BBBEBB", img:"images/color-fog.jpg",      en:"Fog Grey",    zh:"雾灰" },
+    { id:"sage",     hex:"#93A08C", img:"images/color-sage.jpg",     en:"Sage",        zh:"鼠尾草绿" },
+    { id:"navy",     hex:"#2A3A4F", img:"images/color-navy.jpg",     en:"Deep Navy",   zh:"深蓝" },
+    { id:"charcoal", hex:"#3A3E40", img:"images/color-charcoal.jpg", en:"Charcoal",    zh:"炭灰" }
+  ],
+  handles: [
+    { id:"bar-brass", en:"Brass bar",   zh:"黄铜长条" },
+    { id:"bar-black", en:"Matte black", zh:"哑黑长条" },
+    { id:"knob",      en:"Round knob",  zh:"圆形拉钮" },
+    { id:"cup",       en:"Cup pull",    zh:"杯形拉手" },
+    { id:"none",      en:"Keep mine",   zh:"不换" }
+  ],
+
+  /* ---- brand colours in the "Make it yours" panel ---------------------- */
+  palette: [
+    { id:"brass",  dot:"#95651B", light:["#95651B","#FFFDF8","#F3E7CF"], dark:["#DDB062","#1A1308","#302617"] },
+    { id:"navy",   dot:"#2A3C52", light:["#2A3C52","#FFFFFF","#E2E8EF"], dark:["#8FB0D2","#0B141E","#1B2531"] },
+    { id:"forest", dot:"#2C6450", light:["#2C6450","#FFFFFF","#E2EEE8"], dark:["#74BA98","#0A1811","#152620"] },
+    { id:"clay",   dot:"#9E4F2C", light:["#9E4F2C","#FFFFFF","#F6E4D9"], dark:["#D98A5E","#1C0E06","#2B1A11"] },
+    { id:"ink",    dot:"#2A2B2F", light:["#2A2B2F","#FFFFFF","#E8E8EA"], dark:["#CBCFD6","#14161A","#262A30"] }
+  ],
+
+  /* ---- where a submitted request goes ----------------------------------
+     With no server there is nothing to post to, so the request is shown
+     back to the customer. To collect leads by email, create a free form at
+     formspree.io and paste its URL here. Never put an API key in this file —
+     it is public, and leaked keys are found within minutes.
+     --------------------------------------------------------------------- */
+  formEndpoint: ""
+};
+
+/* ============================================================================
+   Copy
+   ========================================================================= */
+var L = {
+en: {
+  _lang:"中文",
+  nav1:"Why reface", nav2:"Estimate", nav3:"Our work", nav4:"FAQ", navcta:"Book a visit",
+  heroTag:"Bay Area cabinet refacing",
+  heroH1:"Keep the kitchen. Change the doors.",
+  heroLede:"We replace only the doors, drawer fronts and hardware. Your cabinet boxes, countertop and plumbing stay exactly where they are — so the work takes one day instead of six weeks, and needs no permit.",
+  heroCta1:"Get an instant estimate", heroCta2:"See our work",
+  st1:"Day on site",
+  cl1:"Installed in one day", cl2:"No permit required",
+  cl3:"Your cabinet boxes stay", cl4:"Ten-year warranty",
+  baTag:"The same kitchen", baH2:"One day of work. Drag to see it.",
+  baBefore:"Before", baAfter:"After", baHint:"Drag the handle, or use the arrow keys",
+  cmpTag:"Three ways to change a kitchen",
+  cmpH2:"Why most Bay Area kitchens don't need a remodel",
+  cmpLede:"If your boxes are solid — and in most homes built after 1980 they are — the doors are the only part doing the aging.",
+  cmpBest:"What we do",
+  cmpR1:"Time on site", cmpR2:"Permit", cmpR3:"Empty the cabinets", cmpR4:"How long it lasts",
+  estTag:"Instant estimate", estH2:"Price your kitchen in about a minute",
+  estDemo:"Reset to the example",
+  p1H:"What's in your kitchen",
+  cUpper:"Upper cabinet doors", cUpperS:"Wall cabinets above the counter",
+  cLower:"Lower cabinet doors", cLowerS:"Base cabinets below the counter",
+  cDrawer:"Drawer fronts", cDrawerS:"Counted separately from doors",
+  p1Note:"Pre-filled with a typical 24-front kitchen — change any number. A double-door cabinet counts as two.",
+  p2H:"Choose how it should look", p2Door:"Door style",
+  p2Finish:"Finish — the room above updates", p2Hw:"Hardware",
+  p2Add:"Replace at the same time",
+  addFaucet:"Kitchen faucet", addSink:"Sink",
+  qCap:"Your estimate", qSub:"Estimated range for #N fronts",
+  qDisc:"An estimate, not a quote. We confirm the final price after measuring, and nothing is owed until you approve it.",
+  qCta:"Book a free measurement", qEmpty:"Add a door or a drawer front to see a price.",
+  ownerPrice:"Price list — edit it and watch the estimate move", ownerTag:"Owner",
+  ownerPriceNote:"In the live version this sits in the admin dashboard, not on the customer page. It's exposed here so you can see how the pricing engine is wired.",
+  lDoors:"Doors", lDrawer:"Drawer fronts", lHw:"Hardware", lLabour:"Installation",
+  lFaucet:"Faucet", lSink:"Sink", lTotal:"Estimated total",
+  pUpper:"Upper door, each", pLower:"Lower door, each", pDrawer:"Drawer front, each",
+  pHandle:"Handle, each", pL1:"Labour — up to 15", pL2:"Labour — 16 to 25",
+  pL3:"Labour — 26 and up", pFaucet:"Faucet, installed", pSink:"Sink, installed",
+  pRange:"Range spread",
+  prTag:"How it works", prH2:"Four steps, two weeks, one day of mess",
+  wkTag:"Recent work", wkH2:"Four kitchens, four weekends",
+  inTag:"Installation day", inH2:"Your kitchen stays a kitchen",
+  inP:"Nothing comes out of your cabinets. No dust sheets over the whole house, no skip in the driveway, no weeks of takeout. Two installers arrive in the morning and are gone by late afternoon.",
+  tsTag:"What people say", tsH2:"The part they didn't expect",
+  fqTag:"Questions", fqH2:"The things people ask on the phone",
+  bkTag:"Free measurement", bkH2:"Book a visit",
+  bkLede:"Forty minutes, no charge, no obligation. You get a fixed written price the same week.",
+  fName:"Name", fPhone:"Mobile", fCity:"City", fAddr:"Street address",
+  fTime:"Preferred time", fNote:"Anything we should know",
+  fSubmit:"Request my measurement",
+  fErr:"Please add your name and mobile number.",
+  times:["Weekday morning","Weekday afternoon","Saturday morning","Saturday afternoon"],
+  nxH:"What happens next",
+  nx1:"Within one business day — we call to agree a time that suits you.",
+  nx2:"On the visit — we measure every front and show you real door samples in your own light.",
+  nx3:"Within 48 hours — a fixed written price. No allowances, no hourly rates.",
+  nx4:"If you say yes — about two weeks to build, then one day to install.",
+  dnH:"Here's your estimate",
+  dnP:"Nothing was sent — this is a demo. In the live version this request lands in the dashboard below and the customer gets a text.",
+  dnCopy:"Copy these details", dnCopied:"Copied", dnAgain:"Start over",
+  kName:"Name", kPhone:"Mobile", kCity:"City", kAddr:"Address", kTime:"Preferred",
+  kFronts:"Fronts", kStyle:"Door style", kFinish:"Finish", kHw:"Hardware",
+  kAddons:"Add-ons", kEst:"Estimate", kNote:"Note", kNone:"None",
+  dsTag:"For the business owner", dsH2:"What you see when a request comes in",
+  dsLede:"The customer gets a price. You get a qualified lead with the job already scoped — panel count, finish, hardware and estimated value, before you've driven anywhere.",
+  dsFake:"Sample data",
+  ds1:"Leads this week", ds2:"Average estimate", ds3:"Booked a visit", ds4:"Average time on site",
+  dh1:"Received", dh2:"Customer", dh3:"City", dh4:"Fronts", dh5:"Finish",
+  dh6:"Estimate", dh7:"Status",
+  stNew:"New", stBooked:"Booked", stQuoted:"Quoted", stWaiting:"Waiting",
+  ftAbout:"Kitchen cabinet refacing across the South Bay and Peninsula. Doors, drawer fronts and hardware only — no demolition, no permit, no weeks without a kitchen.",
+  ftAreas:"Service area", ftLinks:"Explore", ftOwner:"Owner view",
+  ftQr:"Scan to open on your phone",
+  ftDisc:"Caben is a fictional brand built as a demonstration. The projects, reviews and prices shown are illustrative, not real.",
+  kitFab:"Make it yours", kitH:"See your own name on it",
+  kitP:"Type a company name and pick a colour. The whole page changes as you type.",
+  kitName:"Company name", kitColor:"Brand colour", kitReset:"Reset", kitDone:"Done"
+},
+zh: {
+  _lang:"EN",
+  nav1:"为什么换门", nav2:"在线估价", nav3:"案例", nav4:"常见问题", navcta:"预约上门",
+  heroTag:"湾区厨房橱柜换门",
+  heroH1:"厨房不动，只换柜门。",
+  heroLede:"我们只更换柜门、抽屉面板和拉手。柜体、台面、水电全部保留——所以工期是一天，不是六周，而且不需要 permit。",
+  heroCta1:"立即估价", heroCta2:"看看案例",
+  st1:"天完工",
+  cl1:"一天完成安装", cl2:"无需 permit",
+  cl3:"柜体原位保留", cl4:"十年质保",
+  baTag:"同一个厨房", baH2:"一天的工程。拖动看看。",
+  baBefore:"改造前", baAfter:"改造后", baHint:"拖动中间的圆点，或者用左右方向键",
+  cmpTag:"改造厨房的三种做法",
+  cmpH2:"湾区大多数厨房其实不需要大动",
+  cmpLede:"只要柜体还结实——1980 年之后盖的房子基本都结实——真正显旧的只有柜门。",
+  cmpBest:"我们做的就是这个",
+  cmpR1:"现场工期", cmpR2:"是否需要 permit", cmpR3:"要不要搬空柜子", cmpR4:"能用多久",
+  estTag:"在线估价", estH2:"一分钟算出你家厨房的价格",
+  estDemo:"还原示例厨房",
+  p1H:"你家厨房的情况",
+  cUpper:"上柜门", cUpperS:"台面以上的吊柜门板",
+  cLower:"下柜门", cLowerS:"台面以下的地柜门板",
+  cDrawer:"抽屉面板", cDrawerS:"与柜门分开计算",
+  p1Note:"已按一个常见的 24 块面板厨房预填，数字随便改。双开门的柜子算两块。",
+  p2H:"选择你想要的样子", p2Door:"门型",
+  p2Finish:"颜色 — 上方的厨房会跟着变", p2Hw:"拉手",
+  p2Add:"顺便一起换",
+  addFaucet:"厨房水龙头", addSink:"水槽",
+  qCap:"你的估价", qSub:"共 #N 块面板的估价区间",
+  qDisc:"这是估价，不是正式报价。最终价格以上门测量后确认为准，你确认之前不产生任何费用。",
+  qCta:"预约免费上门量尺", qEmpty:"先加一块柜门或抽屉面板，就能看到价格。",
+  ownerPrice:"价格表 — 改一下，估价立刻跟着变", ownerTag:"老板端",
+  ownerPriceNote:"正式版里这块在后台管理端，不会出现在客户页面。这里放出来是让你看清报价是怎么算的。",
+  lDoors:"柜门", lDrawer:"抽屉面板", lHw:"拉手", lLabour:"安装人工",
+  lFaucet:"水龙头", lSink:"水槽", lTotal:"估价合计",
+  pUpper:"上柜门 单价", pLower:"下柜门 单价", pDrawer:"抽屉面板 单价",
+  pHandle:"拉手 单价", pL1:"人工 — 15 块以内", pL2:"人工 — 16 至 25 块",
+  pL3:"人工 — 26 块以上", pFaucet:"水龙头 含安装", pSink:"水槽 含安装",
+  pRange:"区间浮动",
+  prTag:"怎么做", prH2:"四步，两周，只吵一天",
+  wkTag:"近期案例", wkH2:"四个厨房，四个周末",
+  inTag:"安装当天", inH2:"你的厨房还是厨房",
+  inP:"柜子里的东西一样都不用搬出来。不用全屋铺防尘布，门口不停垃圾车，也不用连着几周叫外卖。两位师傅早上来，下午就收工。",
+  tsTag:"客户评价", tsH2:"他们没想到的那部分",
+  fqTag:"常见问题", fqH2:"电话里问得最多的几个",
+  bkTag:"免费量尺", bkH2:"预约上门",
+  bkLede:"四十分钟，免费，不强制下单。当周就能拿到固定书面报价。",
+  fName:"姓名", fPhone:"手机号", fCity:"城市", fAddr:"街道地址",
+  fTime:"方便的时间", fNote:"有什么需要我们提前知道的",
+  fSubmit:"提交预约",
+  fErr:"请填写姓名和手机号。",
+  times:["工作日上午","工作日下午","周六上午","周六下午"],
+  nxH:"接下来会发生什么",
+  nx1:"一个工作日内 — 我们致电和你约一个方便的时间。",
+  nx2:"上门时 — 逐块测量，并带真实门板样品让你在自家光线下看。",
+  nx3:"48 小时内 — 一份固定的书面报价。没有预留金额，没有按小时计费。",
+  nx4:"你确认之后 — 约两周生产，然后一天完成安装。",
+  dnH:"这是你的估价",
+  dnP:"什么都没有真的发送 — 这是演示。正式版里这条请求会进到下面那个后台，客户同时收到短信。",
+  dnCopy:"复制这些信息", dnCopied:"已复制", dnAgain:"重新开始",
+  kName:"姓名", kPhone:"手机", kCity:"城市", kAddr:"地址", kTime:"时间",
+  kFronts:"面板总数", kStyle:"门型", kFinish:"颜色", kHw:"拉手",
+  kAddons:"加项", kEst:"估价", kNote:"备注", kNone:"无",
+  dsTag:"给生意老板看的", dsH2:"客户提交后，你会看到什么",
+  dsLede:"客户拿到价格，你拿到一条已经问清楚的线索——面板数量、颜色、拉手、预估金额，全都在你出门之前就有了。",
+  dsFake:"示例数据",
+  ds1:"本周线索", ds2:"平均估价", ds3:"预约上门率", ds4:"平均停留时长",
+  dh1:"提交时间", dh2:"客户", dh3:"城市", dh4:"面板数", dh5:"颜色",
+  dh6:"估价", dh7:"状态",
+  stNew:"新线索", stBooked:"已预约", stQuoted:"已报价", stWaiting:"待跟进",
+  ftAbout:"服务南湾与半岛地区的厨房橱柜换门。只换柜门、抽屉面板和拉手——不拆除、不需要 permit、不用好几周没厨房用。",
+  ftAreas:"服务范围", ftLinks:"快速跳转", ftOwner:"老板端视图",
+  ftQr:"扫码在手机上打开",
+  ftDisc:"Caben 是为演示而虚构的品牌。页面中的案例、评价和价格均为示意，并非真实。",
+  kitFab:"换成你的品牌", kitH:"把你自己的名字放上去",
+  kitP:"输入公司名、选一个颜色，整个页面会立刻跟着变。",
+  kitName:"公司名称", kitColor:"品牌色", kitReset:"还原", kitDone:"完成"
+}};
+
+/* ---------- structured content ---------- */
+var COMPARE = [
+  { win:true, span:"c4", price:"$3,000 – $7,000",
+    en:{t:"Refacing", f:["1 day","Not required","No","15 – 20 years"]},
+    zh:{t:"更换柜门", f:["1 天","不需要","不用","15 – 20 年"]} },
+  { span:"c4", price:"$2,000 – $4,000",
+    en:{t:"Repainting", f:["3 – 5 days","Not required","Yes","3 – 5 years"]},
+    zh:{t:"重新喷漆", f:["3 – 5 天","不需要","要","3 – 5 年"]} },
+  { span:"c4", price:"$18,000 – $45,000",
+    en:{t:"Full replacement", f:["4 – 8 weeks","Usually required","Yes, completely","20 – 30 years"]},
+    zh:{t:"整体拆换", f:["4 – 8 周","通常需要","要全部搬空","20 – 30 年"]} }
+];
+var PROCESS = [
+  { span:"c3",
+    en:{t:"We measure", p:"A technician measures every door and drawer front and confirms the finish in your own light. About 40 minutes, free."},
+    zh:{t:"上门量尺", p:"师傅逐块测量每一扇门和抽屉面板，并在你家的光线下确认颜色。约 40 分钟，免费。"} },
+  { span:"c3",
+    en:{t:"You approve the price", p:"A fixed written quote with no allowances and no hourly rates. Nothing is ordered until you sign it."},
+    zh:{t:"你确认价格", p:"一份固定的书面报价，没有预留金额、没有按小时计费。你签字之前不下单。"} },
+  { span:"c3",
+    en:{t:"Your doors are built", p:"Doors and drawer fronts are cut and finished to your measurements. Usually about two weeks."},
+    zh:{t:"工厂生产", p:"按你家的尺寸切割、喷涂柜门和抽屉面板。通常两周左右。"} },
+  { span:"c3",
+    en:{t:"We install in a day", p:"Floors covered in the morning, old doors out, new doors and hardware on, everything hauled away. Cook dinner that night."},
+    zh:{t:"一天完成安装", p:"早上铺好地面保护，拆旧门、装新门和拉手、清走所有垃圾。当天晚上就能做饭。"} }
+];
+var GALLERY = [
+  { img:"images/case-1.jpg", span:"c7", ratio:"16/10",
+    en:{t:"Warm white, black hardware", loc:"Willow Glen, San Jose"},
+    zh:{t:"暖白 + 哑黑拉手", loc:"San Jose, Willow Glen"}, fronts:24, days:1, price:"$4,900" },
+  { img:"images/case-2.jpg", span:"c5", ratio:"4/3",
+    en:{t:"Walnut slab, handleless", loc:"Mountain View"},
+    zh:{t:"胡桃木平板，无拉手", loc:"Mountain View"}, fronts:31, days:1, price:"$6,400" },
+  { img:"images/case-3.jpg", span:"c5", ratio:"4/3",
+    en:{t:"Charcoal below, white above", loc:"Palo Alto"},
+    zh:{t:"下炭灰，上白色", loc:"Palo Alto"}, fronts:28, days:1, price:"$5,700" },
+  { img:"images/case-4.jpg", span:"c7", ratio:"16/10",
+    en:{t:"Fog grey in a galley", loc:"Santa Clara"},
+    zh:{t:"窄厨房配雾灰", loc:"Santa Clara"}, fronts:17, days:1, price:"$3,450" }
+];
+var VOICES = [
+  { span:"c4",
+    en:{q:"I kept waiting for the catch. They were gone by four and I made dinner in my own kitchen that night.", n:"Daniel R.", m:"Sunnyvale · 22 fronts"},
+    zh:{q:"我一直在等有什么坑。结果他们四点就收工了，当天晚上我就在自家厨房做了饭。", n:"Daniel R.", m:"Sunnyvale · 22 块面板"} },
+  { span:"c4", mid:true,
+    en:{q:"Three remodel quotes came back over thirty thousand. This was under five, and honestly I cannot tell the difference.", n:"Mei L.", m:"Fremont · 26 fronts"},
+    zh:{q:"之前找了三家报整体改造，都是三万多。这个不到五千，说实话我看不出差别。", n:"Mei L.", m:"Fremont · 26 块面板"} },
+  { span:"c4",
+    en:{q:"We listed the house four weeks later. The agent put the kitchen photo first.", n:"Priya & Tom", m:"Campbell · 19 fronts"},
+    zh:{q:"四周后我们挂牌卖房，经纪人把厨房那张照片放在了第一张。", n:"Priya & Tom", m:"Campbell · 19 块面板"} }
+];
+var FAQ = [
+  { en:{q:"Will the new doors match my existing cabinet boxes?",
+        a:"The visible frame of each cabinet is covered with a matching veneer at the same time as the doors go on, so the box and the door read as one piece. The inside of the cabinet is left as it is — that is part of why the job stays a one-day job."},
+    zh:{q:"新柜门和原来的柜体颜色能对上吗？",
+        a:"装门的同时，柜体露在外面的边框会贴上同色饰面，所以柜体和门看起来是一整套。柜子内部保持原样——这也是这个活能一天做完的原因之一。"} },
+  { en:{q:"How do I know my boxes are worth keeping?",
+        a:"The technician checks them at the measurement visit. If a box is water-damaged, racked or made of crumbling particle board, we say so and tell you not to reface that run. Most Bay Area kitchens built after 1980 have plywood boxes that long outlast their doors."},
+    zh:{q:"怎么知道我家柜体还值得保留？",
+        a:"量尺的时候师傅会检查。如果柜体泡过水、变形、或者是已经酥掉的刨花板，我们会直接告诉你那一排不建议换门。湾区 1980 年之后的厨房大多是夹板柜体，寿命远比柜门长。"} },
+  { en:{q:"Is it loud? Do I need to leave the house?",
+        a:"No demolition and no saws indoors — the doors arrive finished and cut to size. It is about as loud as someone assembling furniture. People work from home through it all the time."},
+    zh:{q:"吵不吵？人要不要回避？",
+        a:"没有拆除，室内也不用锯——门板是成品，按尺寸做好直接装。噪音大概相当于有人在组装家具。很多客户当天照常在家办公。"} },
+  { en:{q:"Can I reface only part of the kitchen?",
+        a:"Yes, and it is common — an island in a different colour, or the uppers left alone. Price follows the panel count, so a partial job simply costs less."},
+    zh:{q:"可以只换一部分吗？",
+        a:"可以，而且很常见——比如岛台换成另一个颜色，或者上柜先不动。价格按面板数量算，所以换得少就花得少。"} },
+  { en:{q:"What is not included?",
+        a:"Countertops, backsplash, appliances, flooring and moving plumbing or electrical. If a hinge or a drawer slide is broken we replace it and it shows on the quote as a line item, usually under forty dollars."},
+    zh:{q:"哪些不包含在内？",
+        a:"台面、挡水墙、电器、地板，以及改水改电。如果有铰链或滑轨坏了，我们会换掉，并在报价里单列，通常不到四十美元。"} },
+  { en:{q:"How accurate is the estimate on this page?",
+        a:"It is built from the real price list, so it lands close when the counts are right. Miscounting double-door cabinets is the usual reason a number moves. The measurement visit settles it, and the written price is fixed."},
+    zh:{q:"这个页面上的估价准吗？",
+        a:"用的是真实价格表，所以只要数量数对了就很接近。价格会变通常是因为双开门柜子少数了。上门量尺后定下来，书面报价就是固定价。"} }
+];
+var LEADS = [
+  { t:"08:12", n:"M. Alvarez", c:"San Jose",    f:26, fin:"navy",     e:"$5,150", s:"new" },
+  { t:"Yest.", n:"K. Tanaka",  c:"Sunnyvale",   f:18, fin:"white",    e:"$3,720", s:"booked" },
+  { t:"Yest.", n:"R. Okafor",  c:"Fremont",     f:31, fin:"charcoal", e:"$6,280", s:"booked" },
+  { t:"2d",    n:"J. Lin",     c:"Palo Alto",   f:22, fin:"sage",     e:"$4,460", s:"quoted" },
+  { t:"3d",    n:"S. Petrov",  c:"Santa Clara", f:14, fin:"greige",   e:"$2,980", s:"waiting" }
+];
+
+/* ============================================================================
+   State + helpers
+   ========================================================================= */
+var S = {
+  lang:"en",
+  counts:{ upper:10, lower:8, drawer:6 },   // opens pre-filled with a typical kitchen
+  style:CONFIG.styles[0].id, finish:CONFIG.finishes[0].id, handle:CONFIG.handles[0].id,
+  faucet:false, sink:false,
+  prices:Object.assign({}, CONFIG.prices),
+  brand:CONFIG.brand, colour:CONFIG.palette[0].id,
+  shownLow:0, shownHigh:0
+};
+var PRICE_FIELDS = [
+  ["upper","pUpper","$"], ["lower","pLower","$"], ["drawer","pDrawer","$"],
+  ["handle","pHandle","$"], ["l1","pL1","$"], ["l2","pL2","$"], ["l3","pL3","$"],
+  ["faucet","pFaucet","$"], ["sink","pSink","$"], ["range","pRange","±%"]
+];
+function t(k){ return L[S.lang][k]; }
+function $(id){ return document.getElementById(id); }
+function money(n){ return "$" + Math.round(n).toLocaleString("en-US"); }
+function total(){ return S.counts.upper + S.counts.lower + S.counts.drawer; }
+function esc(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return { "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c];
+  });
+}
+function pick(list, id){
+  for (var i=0;i<list.length;i++) if (list[i].id === id) return list[i];
+  return list[0];
+}
+function loc(o){ return o[S.lang] || o.en; }
+var ARROW = '<span class="cap"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true">' +
+  '<path d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.4" ' +
+  'stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+
+/* ============================================================================
+   Pricing
+   ========================================================================= */
+function quote(){
+  var p = S.prices, c = S.counts, n = total();
+  var doors   = c.upper*p.upper + c.lower*p.lower;
+  var drawers = c.drawer*p.drawer;
+  var hw      = S.handle === "none" ? 0 : n*p.handle;
+  var labour  = n === 0 ? 0 : (n <= 15 ? p.l1 : (n <= 25 ? p.l2 : p.l3));
+  var fa = S.faucet ? p.faucet : 0;
+  var si = S.sink   ? p.sink   : 0;
+  var sub = doors + drawers + hw + labour + fa + si;
+  var pct = Math.max(0, Math.min(40, p.range)) / 100;
+  return { n:n, doors:doors, drawers:drawers, hw:hw, labour:labour, faucet:fa, sink:si, sub:sub,
+    low:  Math.max(0, Math.floor(sub*(1-pct)/50)*50),
+    high: Math.ceil(sub*(1+pct)/50)*50 };
+}
+var figTimer = null;
+function renderQuote(){
+  var q = quote(), fig = $("figure"), sub = $("figureSub");
+  if (q.n === 0){
+    if (figTimer) cancelAnimationFrame(figTimer);
+    S.shownLow = 0; S.shownHigh = 0;
+    fig.textContent = "—"; sub.textContent = t("qEmpty");
+    $("breakdown").innerHTML = ""; return;
+  }
+  sub.textContent = t("qSub").replace("#N", q.n);
+  var fromL = S.shownLow, fromH = S.shownHigh, t0 = null;
+  if (figTimer) cancelAnimationFrame(figTimer);
+  function tick(ts){
+    if (t0 === null) t0 = ts;
+    var k = Math.min(1, (ts - t0) / 520), e = 1 - Math.pow(1 - k, 3);
+    fig.textContent = money(fromL + (q.low-fromL)*e) + " – " + money(fromH + (q.high-fromH)*e);
+    if (k < 1) figTimer = requestAnimationFrame(tick);
+    else { S.shownLow = q.low; S.shownHigh = q.high; figTimer = null; }
+  }
+  figTimer = requestAnimationFrame(tick);
+
+  var c = S.counts, rows = [];
+  if (c.upper + c.lower > 0) rows.push([t("lDoors") + " × " + (c.upper + c.lower), money(q.doors)]);
+  if (c.drawer > 0)          rows.push([t("lDrawer") + " × " + c.drawer, money(q.drawers)]);
+  if (q.hw > 0)              rows.push([t("lHw") + " × " + q.n, money(q.hw)]);
+  rows.push([t("lLabour"), money(q.labour)]);
+  if (q.faucet) rows.push([t("lFaucet"), money(q.faucet)]);
+  if (q.sink)   rows.push([t("lSink"),   money(q.sink)]);
+  var html = "";
+  rows.forEach(function(r){
+    html += '<div class="l"><span class="d">' + esc(r[0]) + '</span><span class="v num">' + r[1] + '</span></div>';
+  });
+  html += '<div class="l sum"><span class="d">' + t("lTotal") + '</span><span class="v num">' + money(q.sub) + '</span></div>';
+  $("breakdown").innerHTML = html;
+}
+
+/* ============================================================================
+   Builders
+   ========================================================================= */
+function renderCounts(){
+  $("o_upper").textContent  = S.counts.upper;
+  $("o_lower").textContent  = S.counts.lower;
+  $("o_drawer").textContent = S.counts.drawer;
+}
+function buildPreview(){
+  var box = $("pv"), cap = box.querySelector(".cap");
+  box.innerHTML = "";
+  CONFIG.finishes.forEach(function(f){
+    var im = document.createElement("img");
+    im.src = f.img; im.alt = ""; im.dataset.fin = f.id;
+    im.loading = (f.id === S.finish) ? "eager" : "lazy";
+    if (f.id === S.finish) im.className = "on";
+    box.appendChild(im);
+  });
+  box.appendChild(cap);
+  updatePreview();
+}
+function updatePreview(){
+  var box = $("pv");
+  Array.prototype.forEach.call(box.querySelectorAll("img"), function(im){
+    im.classList.toggle("on", im.dataset.fin === S.finish);
+  });
+  box.querySelector(".cap").textContent = loc(pick(CONFIG.finishes, S.finish));
+}
+function buildPickers(){
+  var dg = $("doorGrid"); dg.innerHTML = "";
+  CONFIG.styles.forEach(function(st){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-pressed", S.style === st.id ? "true" : "false");
+    b.innerHTML = '<span class="im"><img src="' + st.img + '" alt="" loading="lazy"></span>' +
+                  '<span>' + esc(loc(st)) + '</span>';
+    b.onclick = function(){ S.style = st.id; buildPickers(); };
+    dg.appendChild(b);
+  });
+  var tg = $("tintGrid"); tg.innerHTML = "";
+  CONFIG.finishes.forEach(function(f){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-pressed", S.finish === f.id ? "true" : "false");
+    b.innerHTML = '<i style="background:' + f.hex + '"></i><span>' + esc(loc(f)) + '</span>';
+    b.onclick = function(){ S.finish = f.id; buildPickers(); updatePreview(); };
+    tg.appendChild(b);
+  });
+  var hr = $("hwRow"); hr.innerHTML = "";
+  CONFIG.handles.forEach(function(h){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-pressed", S.handle === h.id ? "true" : "false");
+    b.textContent = loc(h);
+    b.onclick = function(){ S.handle = h.id; buildPickers(); renderQuote(); };
+    hr.appendChild(b);
+  });
+}
+function buildPrices(){
+  var box = $("priceRows"); box.innerHTML = "";
+  PRICE_FIELDS.forEach(function(f){
+    var key = f[0];
+    var row = document.createElement("div"); row.className = "pr";
+    var lab = document.createElement("label"); lab.textContent = t(f[1]); lab.htmlFor = "p_"+key;
+    var u = document.createElement("span"); u.className = "u"; u.textContent = f[2];
+    var inp = document.createElement("input");
+    inp.type = "number"; inp.id = "p_"+key; inp.min = "0";
+    inp.step = key === "range" ? "1" : "5";
+    inp.value = S.prices[key];
+    inp.oninput = function(){
+      var v = parseFloat(inp.value);
+      S.prices[key] = isNaN(v) ? 0 : v;
+      renderQuote(); renderAddonPrices();
+    };
+    row.appendChild(lab); row.appendChild(u); row.appendChild(inp);
+    box.appendChild(row);
+  });
+}
+function renderAddonPrices(){
+  $("amtFaucet").textContent = "+ " + money(S.prices.faucet);
+  $("amtSink").textContent   = "+ " + money(S.prices.sink);
+}
+function buildCompare(){
+  var g = $("cmpGrid"); g.innerHTML = "";
+  var keys = ["cmpR1","cmpR2","cmpR3","cmpR4"];
+  COMPARE.forEach(function(it){
+    var L2 = loc(it);
+    var d = document.createElement("div");
+    d.className = "bez cmp " + it.span + (it.win ? " win" : "");
+    var pairs = "";
+    keys.forEach(function(k, i){
+      pairs += '<div class="pair"><dt>' + t(k) + '</dt><dd>' + esc(L2.f[i]) + '</dd></div>';
+    });
+    d.innerHTML = '<div class="core">' +
+      '<span class="crown">' + (it.win ? t("cmpBest") : "&nbsp;") + '</span>' +
+      '<h3>' + esc(L2.t) + '</h3>' +
+      '<p class="price num">' + it.price + '</p>' +
+      '<dl>' + pairs + '</dl></div>';
+    g.appendChild(d);
+  });
+}
+function buildProcess(){
+  var g = $("procGrid"); g.innerHTML = "";
+  PROCESS.forEach(function(it, i){
+    var L2 = loc(it);
+    var d = document.createElement("div");
+    d.className = "rstep";
+    d.innerHTML = '<div class="rnum">0' + (i+1) + '</div>' +
+      '<h4>' + esc(L2.t) + '</h4><p>' + esc(L2.p) + '</p>';
+    g.appendChild(d);
+  });
+}
+function buildGallery(){
+  var g = $("galGrid"); g.innerHTML = "";
+  GALLERY.forEach(function(it){
+    var L2 = loc(it);
+    var d = document.createElement("article");
+    d.className = "bez gcard " + it.span;
+    d.innerHTML = '<div class="core">' +
+      '<div class="im" style="aspect-ratio:' + it.ratio + '">' +
+        '<img src="' + it.img + '" alt="' + esc(L2.t) + '" loading="lazy"></div>' +
+      '<div class="meta"><h4>' + esc(L2.t) + '</h4>' +
+        '<p class="loc">' + esc(L2.loc) + '</p>' +
+        '<div class="f">' +
+          '<div><b class="num">' + it.fronts + '</b><span>' + t("kFronts") + '</span></div>' +
+          '<div><b class="num">' + it.days + '</b><span>' + t("st1") + '</span></div>' +
+          '<div><b class="num">' + it.price + '</b><span>' + t("kEst") + '</span></div>' +
+        '</div></div></div>';
+    g.appendChild(d);
+  });
+}
+var STAR = '<svg viewBox="0 0 20 19" aria-hidden="true">' +
+  '<path d="M10 0l2.65 6.32 6.85.54-5.2 4.46 1.58 6.68L10 14.4 4.12 18l1.58-6.68L.5 6.86l6.85-.54z"' +
+  ' fill="currentColor"/></svg>';
+function buildVoices(){
+  var g = $("voiceGrid"); g.innerHTML = "";
+  VOICES.forEach(function(it){
+    var L2 = loc(it);
+    var d = document.createElement("article");
+    d.className = "bez voice " + it.span + (it.mid ? " mid" : "");
+    d.innerHTML = '<div class="core">' +
+      '<div class="st" aria-label="5 out of 5">' + STAR + STAR + STAR + STAR + STAR + '</div>' +
+      '<blockquote>' + esc(L2.q) + '</blockquote>' +
+      '<div class="who"><b>' + esc(L2.n) + '</b>' + esc(L2.m) + '</div></div>';
+    g.appendChild(d);
+  });
+}
+function buildFaq(){
+  var g = $("faqList"); g.innerHTML = "";
+  FAQ.forEach(function(it, i){
+    var L2 = loc(it);
+    var d = document.createElement("details");
+    if (i === 0) d.open = true;
+    d.innerHTML = '<summary>' + esc(L2.q) + '</summary>' +
+                  '<div class="content">' + esc(L2.a) + '</div>';
+    g.appendChild(d);
+  });
+}
+function buildLeads(){
+  var tb = $("leadRows"); tb.innerHTML = "";
+  var sk = { "new":"stNew", "booked":"stBooked", "quoted":"stQuoted", "waiting":"stWaiting" };
+  var sc = { "new":"new", "booked":"ok", "quoted":"ok", "waiting":"wait" };
+  LEADS.forEach(function(l){
+    var fin = pick(CONFIG.finishes, l.fin);
+    var tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td data-h="' + t("dh1") + '" class="num" style="color:var(--ink-3)">' + esc(l.t) + '</td>' +
+      '<td data-h="' + t("dh2") + '" class="nm">' + esc(l.n) + '</td>' +
+      '<td data-h="' + t("dh3") + '">' + esc(l.c) + '</td>' +
+      '<td data-h="' + t("dh4") + '" class="num">' + l.f + '</td>' +
+      '<td data-h="' + t("dh5") + '">' + esc(loc(fin)) + '</td>' +
+      '<td data-h="' + t("dh6") + '" class="num">' + esc(l.e) + '</td>' +
+      '<td data-h="' + t("dh7") + '"><span class="pill ' + sc[l.s] + '">' + t(sk[l.s]) + '</span></td>';
+    tb.appendChild(tr);
+  });
+}
+function buildCities(){
+  var ul = $("cityList"); ul.innerHTML = "";
+  CONFIG.cities.forEach(function(c){
+    var li = document.createElement("li"); li.textContent = c; ul.appendChild(li);
+  });
+}
+
+/* ============================================================================
+   Language
+   ========================================================================= */
+function applyLang(){
+  document.documentElement.lang = (S.lang === "zh" ? "zh-Hans" : "en");
+  Array.prototype.forEach.call(document.querySelectorAll("[data-t]"), function(el){
+    var v = t(el.getAttribute("data-t"));
+    if (typeof v === "string") el.textContent = v;
+  });
+  $("langBtn").textContent = t("_lang");
+
+  var city = $("f_city"), ci = city.selectedIndex;
+  city.innerHTML = "";
+  CONFIG.cities.forEach(function(c, i){
+    var o = document.createElement("option"); o.value = String(i); o.textContent = c;
+    city.appendChild(o);
+  });
+  city.selectedIndex = ci > 0 ? ci : 0;
+
+  var tm = $("f_time"), ti = tm.selectedIndex;
+  tm.innerHTML = "";
+  t("times").forEach(function(s, i){
+    var o = document.createElement("option"); o.value = String(i); o.textContent = s;
+    tm.appendChild(o);
+  });
+  tm.selectedIndex = ti > 0 ? ti : 0;
+  $("kitName").placeholder = CONFIG.brand;
+
+  buildPickers(); updatePreview(); buildPrices(); renderAddonPrices();
+  buildCompare(); buildProcess(); buildGallery(); buildVoices(); buildFaq(); buildLeads();
+  renderQuote();
+}
+
+/* ============================================================================
+   Brand kit
+   ========================================================================= */
+function isDark(){
+  var a = document.documentElement.getAttribute("data-theme");
+  if (a === "dark") return true;
+  if (a === "light") return false;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+function applyBrand(){
+  var p = pick(CONFIG.palette, S.colour);
+  var v = isDark() ? p.dark : p.light;
+  var r = document.documentElement.style;
+  r.setProperty("--accent", v[0]);
+  r.setProperty("--accent-ink", v[1]);
+  r.setProperty("--accent-soft", v[2]);
+  var name = (S.brand || CONFIG.brand).toUpperCase();
+  $("markTop").textContent = name;
+  $("markFoot").textContent = name;
+  $("dashTitle").textContent = name + " · " + (S.lang === "zh" ? "线索" : "Leads");
+}
+function buildHues(){
+  var box = $("kitHues"); box.innerHTML = "";
+  CONFIG.palette.forEach(function(p){
+    var b = document.createElement("button");
+    b.type = "button"; b.style.background = p.dot;
+    b.setAttribute("aria-pressed", S.colour === p.id ? "true" : "false");
+    b.setAttribute("aria-label", p.id);
+    b.onclick = function(){ S.colour = p.id; buildHues(); applyBrand(); };
+    box.appendChild(b);
+  });
+}
+
+/* ============================================================================
+   Before / after
+   ========================================================================= */
+(function(){
+  var ba = $("ba"), dragging = false;
+  function set(pct){
+    pct = Math.max(0, Math.min(100, pct));
+    ba.style.setProperty("--split", pct + "%");
+    ba.setAttribute("aria-valuenow", Math.round(pct));
+  }
+  function fromEvent(e){
+    var r = ba.getBoundingClientRect();
+    set(((e.clientX !== undefined ? e.clientX : 0) - r.left) / r.width * 100);
+  }
+  ba.addEventListener("pointerdown", function(e){
+    dragging = true; ba.setPointerCapture(e.pointerId); fromEvent(e);
+  });
+  ba.addEventListener("pointermove", function(e){ if (dragging) fromEvent(e); });
+  ba.addEventListener("pointerup",     function(){ dragging = false; });
+  ba.addEventListener("pointercancel", function(){ dragging = false; });
+  ba.addEventListener("keydown", function(e){
+    var cur = parseFloat(ba.getAttribute("aria-valuenow")) || 50;
+    if (e.key === "ArrowLeft")  { set(cur - 4); e.preventDefault(); }
+    if (e.key === "ArrowRight") { set(cur + 4); e.preventDefault(); }
+    if (e.key === "Home") { set(0);   e.preventDefault(); }
+    if (e.key === "End")  { set(100); e.preventDefault(); }
+  });
+  set(50);
+})();
+
+/* ============================================================================
+   Booking
+   ========================================================================= */
+function leadRows(){
+  var q = quote();
+  var st = pick(CONFIG.styles, S.style), fi = pick(CONFIG.finishes, S.finish),
+      ha = pick(CONFIG.handles, S.handle);
+  var addons = [];
+  if (S.faucet) addons.push(t("lFaucet"));
+  if (S.sink)   addons.push(t("lSink"));
+  var rows = [
+    [t("kName"),   $("f_name").value.trim()],
+    [t("kPhone"),  $("f_phone").value.trim()],
+    [t("kCity"),   CONFIG.cities[$("f_city").selectedIndex] || ""],
+    [t("kAddr"),   $("f_addr").value.trim() || "—"],
+    [t("kTime"),   t("times")[$("f_time").selectedIndex]],
+    [t("kFronts"), q.n + "  (" + S.counts.upper + " / " + S.counts.lower + " / " + S.counts.drawer + ")"],
+    [t("kStyle"),  loc(st)],
+    [t("kFinish"), loc(fi)],
+    [t("kHw"),     loc(ha)],
+    [t("kAddons"), addons.length ? addons.join(", ") : t("kNone")],
+    [t("kEst"),    q.n ? money(q.low) + " – " + money(q.high) : "—"]
+  ];
+  var note = $("f_note").value.trim();
+  if (note) rows.push([t("kNote"), note]);
+  return rows;
+}
+function submitBooking(){
+  var err = $("formErr");
+  if (!$("f_name").value.trim() || !$("f_phone").value.trim()){
+    err.textContent = t("fErr"); err.hidden = false; $("f_name").focus(); return;
+  }
+  err.hidden = true;
+  var rows = leadRows(), html = "";
+  rows.forEach(function(r){
+    html += '<div class="k"><span>' + esc(r[0]) + '</span><span>' + esc(r[1]) + '</span></div>';
+  });
+  $("recapCard").innerHTML = html;
+  function show(){
+    $("bookArea").hidden = true; $("doneBox").hidden = false;
+    $("doneBox").scrollIntoView({ behavior:"smooth", block:"center" });
+  }
+  if (!CONFIG.formEndpoint){ show(); return; }
+  var payload = {};
+  rows.forEach(function(r){ payload[r[0]] = r[1]; });
+  fetch(CONFIG.formEndpoint, {
+    method:"POST", headers:{ "Content-Type":"application/json", "Accept":"application/json" },
+    body: JSON.stringify(payload)
+  }).catch(function(){}).then(show, show);
+}
+
+/* ============================================================================
+   Wiring
+   ========================================================================= */
+$("langBtn").onclick = function(){
+  S.lang = (S.lang === "en" ? "zh" : "en"); applyLang(); applyBrand();
+};
+$("themeBtn").onclick = function(){
+  document.documentElement.setAttribute("data-theme", isDark() ? "light" : "dark");
+  applyBrand();
+};
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyBrand);
+
+/* island menu */
+var sheet = $("sheet"), burger = $("burger");
+function closeSheet(){
+  burger.setAttribute("aria-expanded","false");
+  sheet.classList.remove("on");
+  setTimeout(function(){ sheet.hidden = true; }, 380);
+  document.body.style.overflow = "";
+}
+burger.onclick = function(){
+  if (burger.getAttribute("aria-expanded") === "true"){ closeSheet(); return; }
+  burger.setAttribute("aria-expanded","true");
+  sheet.hidden = false;
+  requestAnimationFrame(function(){ sheet.classList.add("on"); });
+  document.body.style.overflow = "hidden";
+};
+Array.prototype.forEach.call(sheet.querySelectorAll("a"), function(a){ a.onclick = closeSheet; });
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape" && !sheet.hidden) closeSheet();
+});
+
+Array.prototype.forEach.call(document.querySelectorAll(".step button"), function(b){
+  b.onclick = function(){
+    var k = b.getAttribute("data-c"), d = parseInt(b.getAttribute("data-d"), 10);
+    S.counts[k] = Math.max(0, Math.min(99, S.counts[k] + d));
+    renderCounts(); renderQuote();
+  };
+});
+$("addFaucet").onchange = function(){ S.faucet = this.checked; renderQuote(); };
+$("addSink").onchange   = function(){ S.sink   = this.checked; renderQuote(); };
+
+$("demoBtn").onclick = function(){
+  S.counts = { upper:10, lower:8, drawer:6 };
+  S.style = "shaker"; S.finish = "white"; S.handle = "bar-brass";
+  S.faucet = false; S.sink = false;
+  $("addFaucet").checked = false; $("addSink").checked = false;
+  renderCounts(); buildPickers(); updatePreview(); renderQuote();
+  $("estimate").scrollIntoView({ behavior:"smooth", block:"start" });
+};
+
+$("bookForm").addEventListener("submit", function(e){ e.preventDefault(); submitBooking(); });
+$("againBtn").onclick = function(){
+  $("doneBox").hidden = true; $("bookArea").hidden = false;
+  $("bookForm").reset(); $("formErr").hidden = true;
+  $("book").scrollIntoView({ behavior:"smooth", block:"start" });
+};
+$("copyBtn").onclick = function(){
+  var txt = leadRows().map(function(r){ return r[0] + ": " + r[1]; }).join("\n");
+  var btn = $("copyBtn");
+  function done(){
+    btn.textContent = t("dnCopied");
+    setTimeout(function(){ btn.textContent = t("dnCopy"); }, 1800);
+  }
+  function fallback(){
+    var ta = document.createElement("textarea");
+    ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done, fallback);
+  } else fallback();
+};
+
+/* brand kit */
+$("fab").onclick = function(){
+  $("kitPanel").hidden = false; $("fab").hidden = true; $("kitName").focus();
+};
+function closeKit(){ $("kitPanel").hidden = true; $("fab").hidden = false; }
+$("kitClose").onclick = closeKit;
+$("kitDone").onclick  = closeKit;
+$("kitReset").onclick = function(){
+  S.brand = CONFIG.brand; S.colour = CONFIG.palette[0].id;
+  $("kitName").value = ""; buildHues(); applyBrand();
+};
+$("kitName").oninput = function(){
+  S.brand = this.value.trim() || CONFIG.brand; applyBrand();
+};
+
+/* nav lift on scroll */
+window.addEventListener("scroll", function(){
+  $("island").style.boxShadow = window.scrollY > 16 ? "var(--lift-lg)" : "var(--lift)";
+}, { passive:true });
+
+/* Scroll entries. Content is visible unless this code hides it, and a timer
+   un-hides everything if the observer never fires. */
+(function(){
+  var els = document.querySelectorAll(".rise");
+  if (!("IntersectionObserver" in window)) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function show(el){ el.classList.add("in"); }
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (e.isIntersecting){ show(e.target); io.unobserve(e.target); }
+    });
+  }, { rootMargin:"0px 0px -5% 0px", threshold:0 });
+  Array.prototype.forEach.call(els, function(el){ el.classList.add("pre"); io.observe(el); });
+  setTimeout(function(){
+    Array.prototype.forEach.call(els, function(el){
+      if (!el.classList.contains("in")) show(el);
+    });
+  }, 4000);
+})();
+
+/* QR of this page's own URL */
+(function(){
+  var box = $("qrBox");
+  try {
+    if (typeof qrcode !== "function") throw 0;
+    var q = qrcode(0, "M");
+    q.addData(location.href.split("#")[0]);
+    q.make();
+    box.innerHTML = q.createSvgTag({ cellSize:4, margin:0, scalable:true });
+  } catch (e) {
+    var wrap = box.parentNode;
+    if (wrap && wrap.className === "qr") wrap.style.display = "none";
+  }
+})();
+
+/* boot */
+buildCities();
+buildPreview();
+buildHues();
+applyLang();
+applyBrand();
+renderCounts();
+</script>
+</body>
+</html>
